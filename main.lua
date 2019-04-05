@@ -1,5 +1,8 @@
-function love.load()
+Timer = require 'Timer'
 
+function love.load()
+	g_counter = 0
+	timer = Timer()
 	MAP = {}
 	MAP.X = 600
 	MAP.Y = 600 
@@ -19,9 +22,31 @@ function love.load()
 	
 end
 
+function love.keypressed(key)
+	if (key == "d") then
+		--g_counter = Inc(g_counter)
+		--handle = Timer.New()
+		--timerhandle = Timer:after(1,function() Inc() end)
+		timer:every(1, function()
+			g_counter = g_counter + 1 
+		end)
+
+	elseif (key=="a") then
+		--Timer.cancel(timerhandle)
+		timer:destroy()
+	end
+end
+
+--function love.timer()
+	--OBJ.SPEED.MODULE = OBJ.SPEED.MODULE + 0.25		
+--end
+
+--[[function Inc()
+	g_counter=g_counter+1
+end]]
 
 function love.update(dt)
-	
+	timer:update(dt)
 	PosUpdate(OBJ)
 	SpeedUpdate(OBJ)
 	
@@ -37,6 +62,7 @@ end
 
 function love.draw()
 	love.graphics.draw(OBJ.IMG, OBJ.X - OBJ.R, OBJ.Y - OBJ.R, 0, 0.25, 0.25)
+	love.graphics.print(g_counter,0,0)
 end
 
 function PosUpdate(U)
