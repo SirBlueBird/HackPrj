@@ -77,7 +77,7 @@ function love.load()
 ---------------------------------------------------------------------------
 	
 	Stars = {}
-	for i = 1, 50000 do
+	for i = 1, 10000 do
 		local star = {}
 		star.x = math.random(1, MAP.X)
 		star.y = math.random(1, MAP.Y)
@@ -91,12 +91,11 @@ function love.load()
 	OBJ_selected = -1
 	
 	G = 7*10^-7
+	A_MIN = 2*10^-6
 	
 end
 
 function love.update(dt)
-	print(OBJ_selected)
-
 
 	Mouse_X = love.mouse.getX() + CAM.X
 	Mouse_Y = love.mouse.getY() + CAM.Y
@@ -119,42 +118,49 @@ function love.update(dt)
 		end
 	end
 	
-	if love.mouse.isDown(1) then
+	if love.mouse.isDown(2) then
+		
 		for key, value in pairs(ALL_OBJ) do
 			if math.sqrt( (Mouse_X - ALL_OBJ[key].X)^2 + (Mouse_Y - ALL_OBJ[key].Y)^2 ) <= ALL_OBJ[key].R then 
 				if (OBJ_selected == -1) or not(OBJ_selected == key) then
 					OBJ_selected = key
 				end
-			elseif not(table.getn(ALL_OBJ) == 0) and  not(OBJ_selected == -1) then
-				ALL_OBJ[OBJ_selected].SPEED.MODULE = 2
+			end
+		end
+	elseif love.mouse.isDown(1) then
+		if not(table.getn(ALL_OBJ) == 0) and  not(OBJ_selected == -1) then
+			ALL_OBJ[OBJ_selected].SPEED.MODULE = 0
+			ALL_OBJ[OBJ_selected].SPEED.ANGLE = 0
+				
+			ALL_OBJ[OBJ_selected].X = Mouse_X
+			ALL_OBJ[OBJ_selected].Y = Mouse_Y
+				--[[ALL_OBJ[OBJ_selected].SPEED.MODULE = 2
 				ALL_OBJ[OBJ_selected].SPEED.ANGLE = math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
 				if (Mouse_Y - ALL_OBJ[OBJ_selected].Y) < 0 then
 					ALL_OBJ[OBJ_selected].SPEED.ANGLE = -ALL_OBJ[OBJ_selected].SPEED.ANGLE
-				end
-			end
+				end--]]
+				
 		end
-	elseif (love.mouse.isDown(2)) and not(OBJ_selected == -1) then
+	end
+	--[[elseif (love.mouse.isDown(2)) and not(OBJ_selected == -1) then
 		ALL_OBJ[OBJ_selected].ACCEL.MODULE = .1
 		ALL_OBJ[OBJ_selected].ACCEL.ANGLE = math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
 		if (Mouse_Y - ALL_OBJ[OBJ_selected].Y) < 0 then
 			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = -ALL_OBJ[OBJ_selected].ACCEL.ANGLE
-		end
-	end
+		end--]]
 	
 	CAM_VIEW()
 end
 
 function love.draw()
+
 	for k,v in pairs(Stars) do
-			local chance = math.random(1,10)
-			if chance > 3 then
-				love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
-			end
+		love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
 	end
 	
 
 	for key, value in pairs(ALL_OBJ) do
-		love.graphics.draw(ALL_OBJ[key].IMG, (ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X) * Scale, (ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y)* Scale, Scale, Scale)
+		love.graphics.draw(ALL_OBJ[key].IMG, (ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X), (ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y))
 	end
 	
 	love.graphics.print( OBJ_selected, 400, 70)
@@ -170,13 +176,9 @@ function love.mousepressed(x, y, button, istouch)
 	mousehandle(x,y,button,guis.Draw,guis.DrawPanel)
 end
 
-function love.keypressed(key) 
+function love.keyreleased(key) 
 	if key == "c" then
 		NewOBJ(ALL_OBJ, "EARTH")
-	elseif (key == "-") and not(Scale == DeltaScale) then
-		Scale = Scale - DeltaScale
-	elseif (key == "+") and not(Scale == DeltaScale) then
-		Scale = Scale + DeltaScale
 	end
 end
 
@@ -188,54 +190,57 @@ function PosUpdate()
 end
 
 function SpeedUpdate()
-	local buf
-	local angle_buf
 	for key, value in pairs(ALL_OBJ) do 
-		buf = math.sqrt( (ALL_OBJ[key].SPEED.MODULE*math.cos(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE))^2 + (ALL_OBJ[key].SPEED.MODULE*math.sin(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE))^2 )
-		angle_buf = 0
-		if not(buf == 0) then 
-			angle_buf = math.acos( (ALL_OBJ[key].SPEED.MODULE*math.cos(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE)) / buf ) 
-			if (ALL_OBJ[key].SPEED.MODULE*math.sin(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE)) < 0 then 
-				angle_buf = -angle_buf 
-			end
-		end
-
-		ALL_OBJ[key].SPEED.MODULE = buf
-		ALL_OBJ[key].SPEED.ANGLE = angle_buf	
+		ALL_OBJ[key].SPEED.MODULE, ALL_OBJ[key].SPEED.ANGLE = VectSum(ALL_OBJ[key].SPEED, ALL_OBJ[key].ACCEL)
 	end
 end
 
-function AccelUpdate() 
-	if not(table.getn(ALL_OBJ) == 1) then
+function AccelUpdate()
+	if not(#ALL_OBJ == 1) then
+		local Acc_buf = deepcopy(VECT)
+		local Acc_sum = deepcopy(VECT)
 		for key, value in pairs(ALL_OBJ) do
-			a_mod_buf, a_mod_buf_sum, a_angle_buf_sum = 0, 0, 0
+			Acc_sum.MODULE, Acc_sum.ANGLE = 0, 0
 			for i, j in pairs(ALL_OBJ) do
-				buffer = math.sqrt( (ALL_OBJ[key].X - ALL_OBJ[i].X)^2 + (ALL_OBJ[key].Y - ALL_OBJ[i].Y)^2 )
-				if not(i == key) and not(buffer == 0) then
-				
-					a_angle_buf = math.acos( (ALL_OBJ[key].X - ALL_OBJ[i].X) / buffer )
-					if (ALL_OBJ[key].Y - ALL_OBJ[i].Y) > 0 then
-						a_angle_buf = -a_angle_buf
-					end
-					a_mod_buf = ALL_OBJ[key].MASS / buffer^2
-					buffer = a_mod_buf*math.cos(a_angle_buf) + a_mod_buf_sum*math.cos(a_angle_buf_sum)
-					a_mod_buf_sum = math.sqrt( buffer^2 + (a_mod_buf*math.sin(a_angle_buf) + a_mod_buf_sum*math.sin(a_angle_buf_sum))^2 )
-					a_angle_buf_sum = math.acos( buffer / a_mod_buf_sum )
-					
-				end	
+				if not(key == i) then
+					Acc_buf.MODULE, Acc_buf.ANGLE = PointsToVect( ALL_OBJ[key], ALL_OBJ[i] )
+					Acc_sum.MODULE, Acc_sum.ANGLE = VectSum( Acc_sum, Acc_buf)
+				end
 			end
-			a_mod_buf_sum = math.sqrt(a_mod_buf_sum * G) 
-			buffer = a_mod_buf_sum*math.cos(a_angle_buf_sum) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE)
-			local buf_y = a_mod_buf_sum*math.sin(a_angle_buf_sum) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE)
-			ALL_OBJ[key].ACCEL.MODULE = math.sqrt( buffer^2 + (a_mod_buf_sum*math.sin(a_angle_buf_sum) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE))^2 )
-			ALL_OBJ[key].ACCEL.ANGLE = math.acos( buffer / ALL_OBJ[key].ACCEL.MODULE )
-			if buf_y > 0 then
-				ALL_OBJ[key].ACCEL.ANGLE = -ALL_OBJ[key].ACCEL.ANGLE
+			Acc_sum.MODULE = math.sqrt(Acc_sum.MODULE * G)
+			if key == OBJ_selected then 
+				print(Acc_sum.MODULE)
 			end
-			
+			if not(Acc_sum.MODULE <= A_MIN) then
+				ALL_OBJ[key].ACCEL.MODULE, ALL_OBJ[key].ACCEL.ANGLE = VectSum( ALL_OBJ[key].ACCEL, Acc_sum )
+			end
 		end
 	end
-	if not(table.getn(ALL_OBJ) == 0) then
-		print(ALL_OBJ[1].ACCEL.MODULE," ",ALL_OBJ[1].ACCEL.ANGLE)
+end
+
+function VectSum(N, K)
+	local R = deepcopy(VECT)
+	R.MODULE = math.sqrt( (N.MODULE*math.cos(N.ANGLE) + K.MODULE*math.cos(K.ANGLE))^2 + (N.MODULE*math.sin(N.ANGLE) + K.MODULE*math.sin(K.ANGLE))^2 )
+	if not(R.MODULE == 0) then 
+		R.ANGLE = math.acos( (N.MODULE*math.cos(N.ANGLE) + K.MODULE*math.cos(K.ANGLE)) / R.MODULE ) 
+		if (N.MODULE*math.sin(N.ANGLE) + K.MODULE*math.sin(K.ANGLE)) < 0 then
+			R.ANGLE = -R.ANGLE
+		end
 	end
+	
+	return R.MODULE, R.ANGLE
+end
+
+function PointsToVect(N, K)
+	local R = deepcopy(VECT)
+	local L = math.sqrt(( K.X - N.X )^2 + ( K.Y - N.Y )^2)
+	R.MODULE = N.MASS/ L^2
+	if not(R.MODULE == 0) then 
+		R.ANGLE = math.acos( ( K.X - N.X) / L ) 
+		if (K.Y - N.Y) < 0 then
+			R.ANGLE = -R.ANGLE
+		end
+	end
+	
+	return R.MODULE, R.ANGLE
 end
