@@ -1,18 +1,30 @@
 require "constructor_objects"
+require "view"
+
 function love.load()
 
 	
 	
-	love.window.setMode(MAP.X,MAP.Y)
+	love.window.setMode(CAM.W,CAM.H)
 	
 	ALL_OBJ = {}
-	
+	Stars = {}
+	--star = {x=0 , y=0 , visible = true}
+	--star.x = 5 star.y = 10 star.visible = true
+	--table.insert(Stars,star)
+	for i = 1, 10000 do
+		local star = {}
+		star.x = math.random(1, MAP.X)
+		star.y = math.random(1, MAP.Y)
+		star.visible = true
+		table.insert(Stars,star)
+	end
 end
 
 
 function love.update(dt)
-	
 	PosUpdate(OBJ)
+	CAM_VIEW()
 	SpeedUpdate(OBJ)
 	
 	if love.mouse.isDown(1) then
@@ -41,9 +53,11 @@ end
 
 function love.draw()
 	love.graphics.draw(OBJ.IMG, OBJ.X - OBJ.R, OBJ.Y - OBJ.R, 0, 0.25, 0.25)
-	
-	love.graphics.print(OBJ.SPEED.ANGLE, 10, 10)
-	love.graphics.print(OBJ.SPEED.MODULE, 10, 20)
+	for k,v in pairs(Stars) do
+		love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
+	end
+	love.graphics.print(CAM.X, 10, 10)
+	love.graphics.print(CAM.Y, 10, 20)
 	
 	love.graphics.print(OBJ.ACCEL.ANGLE, 10, 40)
 	love.graphics.print(OBJ.ACCEL.MODULE, 10, 50)
