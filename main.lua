@@ -77,7 +77,7 @@ function love.load()
 ---------------------------------------------------------------------------
 	
 	Stars = {}
-	for i = 1, 10000 do
+	for i = 1, 50000 do
 		local star = {}
 		star.x = math.random(1, MAP.X)
 		star.y = math.random(1, MAP.Y)
