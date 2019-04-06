@@ -17,9 +17,8 @@ function love.load()
 	timer = Timer()
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
-	local w = CAM.W/12 local h = CAM.H / 20
 	local oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200}
-	upbtn = ButtonCreate(CAM.W-w,0,w,h,"UP",BFont, function() 
+	upbtn = ButtonCreate(MAP.X-50,0,50,30,"UP",BFont, function() 
 		if panel_index > 1 then
 			panel_index=panel_index-1
 			guis.DrawPanel = RemovePanel(guis.DrawPanel,panel_index)
@@ -29,7 +28,7 @@ function love.load()
 	end,
 		oc,fc,tc
 	)
-	downbtn = ButtonCreate(CAM.W-w,h,w,h,"DOWN",BFont, function() 
+	downbtn = ButtonCreate(MAP.X-50,30,50,30,"DOWN",BFont, function() 
 		if panel_index < 4 then
 			panel_index=panel_index+1
 			guis.DrawPanel = RemovePanel(guis.Draw)
@@ -40,29 +39,28 @@ function love.load()
 		oc,fc,tc
 	)
 	local panel = {}
-	local w = CAM.W/(600/110) local h = CAM.H/(600/60)
 	
-	panel[1] = ButtonControlCreate(1,0,0,w,h,"Солнце",BFont, function() 
+	panel[1] = ButtonControlCreate(1,0,0,110,60,"Солнце",BFont, function() 
 	--Пишите ваши функции сюда, ток сделайте менее наркоманскую инициализацию, лол
 	end,
 	oc,fc,tc
 	)
-	panel[2] = ButtonControlCreate(1,w,0,w,h,"Меркурий",BFont, function() 
+	panel[2] = ButtonControlCreate(1,110,0,110,60,"Меркурий",BFont, function() 
+
+	end,
+	oc,fc,tc
+	)
+	panel[3] = ButtonControlCreate(1,220,0,110,60,"Венера",BFont, function() 
 	
 	end,
 	oc,fc,tc
 	)
-	panel[3] = ButtonControlCreate(1,w*2,0,w,h,"Венера",BFont, function() 
+	panel[4] = ButtonControlCreate(1,330,0,110,60,"Земля",BFont, function() 
 	
 	end,
 	oc,fc,tc
 	)
-	panel[4] = ButtonControlCreate(1,w*3,0,w,h,"Земля",BFont, function() 
-	
-	end,
-	oc,fc,tc
-	)
-	panel[5] = ButtonControlCreate(1,w*4,0,w,h,"Марс",BFont, function() 
+	panel[5] = ButtonControlCreate(1,440,0,110,60,"Марс",BFont, function() 
 	
 	end,
 	oc,fc,tc
@@ -96,8 +94,9 @@ function love.load()
 	
 end
 
-
 function love.update(dt)
+	print(OBJ_selected)
+
 
 	Mouse_X = love.mouse.getX() + CAM.X
 	Mouse_Y = love.mouse.getY() + CAM.Y
@@ -109,11 +108,14 @@ function love.update(dt)
 	if love.keyboard.isDown("s") then	
 		if not(OBJ_selected == -1) then
 			ALL_OBJ[OBJ_selected].SPEED.MODULE = 0
+			ALL_OBJ[OBJ_selected].SPEED.ANGLE = 0
 			ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
+			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = 0
 		end
 	elseif love.keyboard.isDown("a") then	
 		if not(OBJ_selected == -1) then
 			ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
+			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = 0
 		end
 	end
 	
@@ -123,7 +125,7 @@ function love.update(dt)
 				if (OBJ_selected == -1) or not(OBJ_selected == key) then
 					OBJ_selected = key
 				end
-			else
+			elseif not(table.getn(ALL_OBJ) == 0) and  not(OBJ_selected == -1) then
 				ALL_OBJ[OBJ_selected].SPEED.MODULE = 2
 				ALL_OBJ[OBJ_selected].SPEED.ANGLE = math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
 				if (Mouse_Y - ALL_OBJ[OBJ_selected].Y) < 0 then
@@ -150,7 +152,7 @@ function love.draw()
 	
 
 	for key, value in pairs(ALL_OBJ) do
-		love.graphics.draw(ALL_OBJ[key].IMG, ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X, ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y)
+		love.graphics.draw(ALL_OBJ[key].IMG, (ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X) * Scale, (ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y)* Scale, Scale, Scale)
 	end
 	
 	love.graphics.print( OBJ_selected, 400, 70)
@@ -169,6 +171,10 @@ end
 function love.keypressed(key) 
 	if key == "c" then
 		NewOBJ(ALL_OBJ, "EARTH")
+	elseif (key == "-") and not(Scale == DeltaScale) then
+		Scale = Scale - DeltaScale
+	elseif (key == "+") and not(Scale == DeltaScale) then
+		Scale = Scale + DeltaScale
 	end
 end
 
@@ -198,7 +204,6 @@ function SpeedUpdate()
 end
 
 function AccelUpdate() 
-	print(table.getn(ALL_OBJ))
 	if not(table.getn(ALL_OBJ) == 1) then
 		for key, value in pairs(ALL_OBJ) do
 			a_mod_buf, a_mod_buf_sum, a_angle_buf_sum = 0, 0, 0
@@ -206,7 +211,7 @@ function AccelUpdate()
 				buffer = math.sqrt( (ALL_OBJ[key].X - ALL_OBJ[i].X)^2 + (ALL_OBJ[key].Y - ALL_OBJ[i].Y)^2 )
 				if not(i == key) and not(buffer == 0) then
 				
-					a_angle_buf = math.acos( (ALL_OBJ[key].X - ALL_OBJ[i].X) / buffer)
+					a_angle_buf = math.acos( (ALL_OBJ[key].X - ALL_OBJ[i].X) / buffer )
 					if (ALL_OBJ[key].Y - ALL_OBJ[i].Y) > 0 then
 						a_angle_buf = -a_angle_buf
 					end
@@ -219,8 +224,16 @@ function AccelUpdate()
 			end
 			a_mod_buf_sum = math.sqrt(a_mod_buf_sum * G) 
 			buffer = a_mod_buf_sum*math.cos(a_angle_buf_sum) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE)
+			local buf_y = a_mod_buf_sum*math.sin(a_angle_buf_sum) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE)
 			ALL_OBJ[key].ACCEL.MODULE = math.sqrt( buffer^2 + (a_mod_buf_sum*math.sin(a_angle_buf_sum) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE))^2 )
 			ALL_OBJ[key].ACCEL.ANGLE = math.acos( buffer / ALL_OBJ[key].ACCEL.MODULE )
+			if buf_y > 0 then
+				ALL_OBJ[key].ACCEL.ANGLE = -ALL_OBJ[key].ACCEL.ANGLE
+			end
+			
 		end
+	end
+	if not(table.getn(ALL_OBJ) == 0) then
+		print(ALL_OBJ[1].ACCEL.MODULE," ",ALL_OBJ[1].ACCEL.ANGLE)
 	end
 end
