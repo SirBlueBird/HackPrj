@@ -17,7 +17,7 @@ function love.load()
 	timer = Timer()
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
-	local w = CAM.W/12 local h = CAM.H / 20
+	local w = CAM.W/12 local h = CAM.H / 40
 	local oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200}
 	upbtn = ButtonCreate(CAM.W-w,0,w,h,"UP",BFont, function() 
 		if panel_index > 1 then
@@ -40,7 +40,7 @@ function love.load()
 		oc,fc,tc
 	)
 	local panel = {}
-	local w = CAM.W/(600/110) local h = CAM.H/(600/60)
+	local w = CAM.W/(600/110) local h = CAM.H/(20)
 	
 	panel[1] = ButtonControlCreate(1,0,0,w,h,"Солнце",BFont, function() 
 	--Пишите ваши функции сюда, ток сделайте менее наркоманскую инициализацию, лол

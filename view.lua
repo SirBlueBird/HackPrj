@@ -3,8 +3,8 @@
 CAM = {}
 	CAM.X = 0
 	CAM.Y = 0
-	CAM.W = 800
-	CAM.H = 600
+	CAM.W = 1280
+	CAM.H = 720
 
 MAP = {}
 	MAP.X = 50000
