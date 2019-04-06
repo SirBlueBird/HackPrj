@@ -32,7 +32,7 @@ end
 
 function OpenPanel(buttons,draw,index)
     for k,v in pairs(buttons) do
-        if v.index == index then
+        if v.index == index or v.index == 0 then
             table.insert(draw,v)
         end
     end

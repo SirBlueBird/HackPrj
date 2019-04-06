@@ -15,11 +15,35 @@ function love.load()
 	g_time = 1;
 	panel_index = 1
 	timer = Timer()
+	rollstate = false -- свернут
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
+
 	local w = CAM.W/12 local h = CAM.H / 40
 	local oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200}
-	upbtn = ButtonCreate(CAM.W-w,0,w,h,"UP",BFont, function() 
+	roll = ButtonCreate(CAM.W/2-w/2,0,w,h,"Open",BFont, function()
+		if rollstate == false then
+			rollstate = true
+			panel_index = 1
+			roll.text = "Close"
+			roll.y=CAM.H/20
+			OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
+			--for k,v in pairs(guis.Obj) do
+			--	if v.index == 1 or v.index == 0 then
+			--		table.insert(guis.DrawPanel,v)
+			--	end
+			--end
+		else
+			rollstate = false
+			guis.DrawPanel = {}
+			roll.text = "Open"
+			roll.y=0
+		end
+	end,
+	oc,fc,tc
+	)
+	
+	upbtn = ButtonControlCreate(0,CAM.W-w,0,w,h,"UP",BFont, function() 
 		if panel_index > 1 then
 			panel_index=panel_index-1
 			guis.DrawPanel = RemovePanel(guis.DrawPanel,panel_index)
@@ -29,8 +53,8 @@ function love.load()
 	end,
 		oc,fc,tc
 	)
-	downbtn = ButtonCreate(CAM.W-w,h,w,h,"DOWN",BFont, function() 
-		if panel_index < 4 then
+	downbtn = ButtonControlCreate(0,CAM.W-w,h,w,h,"DOWN",BFont, function() 
+		if panel_index < 2 then
 			panel_index=panel_index+1
 			guis.DrawPanel = RemovePanel(guis.Draw)
 			
@@ -43,7 +67,7 @@ function love.load()
 	local w = CAM.W/(600/110) local h = CAM.H/(20)
 	
 	panel[1] = ButtonControlCreate(1,0,0,w,h,"Солнце",BFont, function() 
-	--Пишите ваши функции сюда, ток сделайте менее наркоманскую инициализацию, лол
+	--Пишите ваши функции сюда
 	end,
 	oc,fc,tc
 	)
@@ -67,15 +91,43 @@ function love.load()
 	end,
 	oc,fc,tc
 	)
+	--===
+	panel[6] = ButtonControlCreate(2,0,0,w,h,"Юпитер",BFont, function() 
+	--Пишите ваши функции сюда
+	end,
+	oc,fc,tc
+	)
+	panel[7] = ButtonControlCreate(2,w,0,w,h,"Сатурн",BFont, function() 
+	
+	end,
+	oc,fc,tc
+	)
+	panel[8] = ButtonControlCreate(2,w*2,0,w,h,"Уран",BFont, function() 
+	
+	end,
+	oc,fc,tc
+	)
+	panel[9] = ButtonControlCreate(2,w*3,0,w,h,"Нептун",BFont, function() 
+	
+	end,
+	oc,fc,tc
+	)
+	panel[10] = ButtonControlCreate(2,w*4,0,w,h,"SPACEMAN",BFont, function() 
+	
+	end,
+	oc,fc,tc
+	)
 	for k,v in pairs(panel) do
-		if v.index == panel_index then
-		table.insert(guis.DrawPanel,v) end
+		--if v.index == panel_index then
+		--table.insert(guis.DrawPanel,v) end
 		table.insert(guis.Obj,v)
 	end
-	table.insert(guis.Draw,upbtn)
+	--table.insert(guis.Draw,upbtn)
 	table.insert(guis.Obj,upbtn)
-	table.insert(guis.Draw,downbtn)
-	table.insert(guis.Obj,downbtn)	
+	--table.insert(guis.Draw,downbtn)
+	table.insert(guis.Obj,downbtn)
+	table.insert(guis.Draw,roll)
+	table.insert(guis.Obj,roll)
 ---------------------------------------------------------------------------
 	
 	Stars = {}
