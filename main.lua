@@ -1,23 +1,11 @@
+require "constructor_objects"
 function love.load()
 
-	MAP = {}
-	MAP.X = 1000
-	MAP.Y = 800
+	
 	
 	love.window.setMode(MAP.X,MAP.Y)
 	
-	VECT = {}
-	VECT.ANGLE = 0
-	VECT.MODULE = 0
-	
-	OBJ = {}
-	OBJ.R = 36
-	OBJ.MASS = 10
-	OBJ.X = (MAP.X - OBJ.R)/2
-	OBJ.Y = (MAP.Y - OBJ.R)/2
-	OBJ.SPEED = deepcopy(VECT)
-	OBJ.ACCEL = deepcopy(VECT)                               --Ускорение
-	OBJ.IMG = love.graphics.newImage("шар.png")
+	ALL_OBJ = {}
 	
 end
 
