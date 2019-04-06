@@ -1,7 +1,9 @@
 Timer = require 'Timer'
+require 'stuff'
 
 function love.load()
 	g_counter = 0
+	g_time = 1;
 	timer = Timer()
 	MAP = {}
 	MAP.X = 600
@@ -19,31 +21,27 @@ function love.load()
 	OBJ.Y = (MAP.Y - OBJ.R)/2
 	OBJ.SPEED = VECT
 	OBJ.IMG = love.graphics.newImage("шар.png")
+	timer:every(g_time, function()
+		g_counter = Inc(g_counter)-- + 1 
+	end)
 	
 end
 
 function love.keypressed(key)
 	if (key == "d") then
-		--g_counter = Inc(g_counter)
-		--handle = Timer.New()
-		--timerhandle = Timer:after(1,function() Inc() end)
-		timer:every(1, function()
-			g_counter = g_counter + 1 
-		end)
+		g_time = g_time*2
+		timer = ChangeTime(timer,g_time,function() g_counter = g_counter+1 end)
 
 	elseif (key=="a") then
-		--Timer.cancel(timerhandle)
-		timer:destroy()
+		g_time = g_time/2
+		timer = ChangeTime(timer,g_time,function() g_counter = g_counter+1 end)
 	end
 end
 
---function love.timer()
-	--OBJ.SPEED.MODULE = OBJ.SPEED.MODULE + 0.25		
---end
-
---[[function Inc()
-	g_counter=g_counter+1
-end]]
+function Inc(i)
+	i=i+1
+	return i
+end
 
 function love.update(dt)
 	timer:update(dt)
