@@ -1,6 +1,9 @@
-Timer = require 'Timer'
+require "constructor_objects"
+require "view"
 require 'stuff'
 require 'buttons'
+Timer = require 'Timer'
+
 BFont = love.graphics.newFont("calibri.ttf", 15)
 
 function love.load()
@@ -12,25 +15,6 @@ function love.load()
 	g_time = 1;
 	panel_index = 1
 	timer = Timer()
-	MAP = {}
-	MAP.X = 600
-	MAP.Y = 600 
-	
-	love.window.setMode(MAP.X,MAP.Y)
-	
-	VECT = {}
-	VECT.ANGLE = 0
-	VECT.MODULE = 0
-	
-	OBJ = {}
-	OBJ.R = 3
-	OBJ.X = (MAP.X - OBJ.R)/2
-	OBJ.Y = (MAP.Y - OBJ.R)/2
-	OBJ.SPEED = VECT
-	OBJ.IMG = love.graphics.newImage("moon.png")
-	timer:every(g_time, function()
-		--g_counter = Inc(g_counter)-- + 1 
-	end)
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
 	local oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200}
@@ -90,58 +74,135 @@ function love.load()
 	table.insert(guis.Obj,upbtn)
 	table.insert(guis.Draw,downbtn)
 	table.insert(guis.Obj,downbtn)	
+---------------------------------------------------------------------------
+	
+	love.window.setMode(CAM.W, CAM.H)
+	
+	ALL_OBJ = {}
+	OBJ_count = 0
+	OBJ_selected = -1
+	
+	G = 7*10^-10
+	
 end
 
-function love.keypressed(key)
-	if (key == "d") then
-		g_time = g_time*2
-		timer = ChangeTime(timer,g_time,function() g_counter = g_counter+1 end)
 
-	elseif (key=="a") then
-		g_time = g_time/2
-		timer = ChangeTime(timer,g_time,function() g_counter = g_counter+1 end)
+function love.update(dt)
+
+	Mouse_X = love.mouse.getX() + CAM.X
+	Mouse_Y = love.mouse.getY() + CAM.Y
+	
+	PosUpdate()
+	SpeedUpdate()
+	
+	if love.keyboard.isDown("c") then
+		NewOBJ(ALL_OBJ, OBJ_count, "EARTH")
+	elseif love.keyboard.isDown("s") then	
+		if not(OBJ_selected == -1) then
+			ALL_OBJ[OBJ_selected].SPEED.MODULE = 0
+			ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
+		end
+	elseif love.keyboard.isDown("a") then	
+		if not(OBJ_selected == -1) then
+			ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
+		end
 	end
+	
+	if love.mouse.isDown(1) then
+		if not(OBJ_selected == -1) then
+			ALL_OBJ[OBJ_selected].SPEED.MODULE = 2
+			if (Mouse_Y - ALL_OBJ[OBJ_selected].Y) > 0 then
+				ALL_OBJ[OBJ_selected].SPEED.ANGLE = math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
+			else
+				ALL_OBJ[OBJ_selected].SPEED.ANGLE = -math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
+			end
+		else
+			for key, value in pairs(ALL_OBJ) do
+				if math.sqrt( (Mouse_X - ALL_OBJ[key].X)^2 + (Mouse_Y - ALL_OBJ[key].Y)^2 ) <= ALL_OBJ[key].R then 
+					OBJ_selected = key
+				end
+			end
+		end
+	elseif (love.mouse.isDown(2)) and not(OBJ_selected == -1) then
+		ALL_OBJ[OBJ_selected].ACCEL.MODULE = .1
+		if (Mouse_Y - ALL_OBJ[OBJ_selected].Y) > 0 then
+			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
+		else
+			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = -math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
+		end
+	end
+	
+	CAM_VIEW()
+	--[[
+	
+	if love.keyboard.isDown("s") then
+		OBJ.SPEED.ANGLE = 0
+		OBJ.SPEED.MODULE = 0
+		OBJ.ACCEL.ANGLE = 0
+		OBJ.ACCEL.MODULE = 0
+	end --]]
 end
 
-function Inc(i) -- function is for internal tests only
-	i=i+1
-	return i
+function love.draw()
+	for key, value in pairs(ALL_OBJ) do
+		love.graphics.draw(ALL_OBJ[key].IMG, ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X, ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y)
+	end
+	
+	love.graphics.print( OBJ_selected, 400, 70)
+	
+	love.graphics.print( CAM.X, 10, 70)
+	love.graphics.print( CAM.Y, 10, 80)
+	
+	Drawgui(guis.Draw,guis.DrawPanel)
 end
 
 function love.mousepressed(x, y, button, istouch)
 	mousehandle(x,y,button,guis.Draw,guis.DrawPanel)
 end
 
-function love.update(dt)
-	timer:update(dt)
-	PosUpdate(OBJ)
-	SpeedUpdate(OBJ)
-	
-	if love.mouse.isDown(1) then
-		OBJ.SPEED.MODULE = 1
-		if (love.mouse.getY() - OBJ.Y) > 0 then
-			OBJ.SPEED.ANGLE = math.acos( (love.mouse.getX() - OBJ.X) / math.sqrt( (love.mouse.getX() - OBJ.X)^2 + (love.mouse.getY() - OBJ.Y)^2 ) )
-		else
-			OBJ.SPEED.ANGLE = -math.acos( (love.mouse.getX() - OBJ.X) / math.sqrt( (love.mouse.getX() - OBJ.X)^2 + (love.mouse.getY() - OBJ.Y)^2 ) )
+function PosUpdate()
+	for key, value in pairs(ALL_OBJ) do
+		ALL_OBJ[key].X = ALL_OBJ[key].X + ALL_OBJ[key].SPEED.MODULE * math.cos(ALL_OBJ[key].SPEED.ANGLE)
+		ALL_OBJ[key].Y = ALL_OBJ[key].Y + ALL_OBJ[key].SPEED.MODULE * math.sin(ALL_OBJ[key].SPEED.ANGLE)
+	end
+end
+
+function SpeedUpdate()
+	local buf
+	local angle_buf
+	for key, value in pairs(ALL_OBJ) do 
+		buf = math.sqrt( (ALL_OBJ[key].SPEED.MODULE*math.cos(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE))^2 + (ALL_OBJ[key].SPEED.MODULE*math.sin(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE))^2 )
+		angle_buf = 0
+		if not(buf == 0) then 
+			angle_buf = math.acos( (ALL_OBJ[key].SPEED.MODULE*math.cos(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE)) / buf ) 
+			if (ALL_OBJ[key].SPEED.MODULE*math.sin(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE)) < 0 then 
+				angle_buf = -angle_buf 
+			end
 		end
+
+		ALL_OBJ[key].SPEED.MODULE = buf
+		ALL_OBJ[key].SPEED.ANGLE = angle_buf	
 	end
 end
 
-function love.draw()
-	love.graphics.draw(OBJ.IMG, OBJ.X - OBJ.R, OBJ.Y - OBJ.R, 0, 0.25, 0.25)
-	love.graphics.print(panel_index,0,0)
-	Drawgui(guis.Draw,guis.DrawPanel)
-end
-
-function PosUpdate(U)
-	U.X = U.X + U.SPEED.MODULE * math.cos(U.SPEED.ANGLE)
-	U.Y = U.Y + U.SPEED.MODULE * math.sin(U.SPEED.ANGLE)
-end
-
-function SpeedUpdate(U)
-	if U.SPEED.MODULE > 0 then
-		U.SPEED.MODULE = U.SPEED.MODULE - 0.25
-	elseif U.SPEED.MODULE < 0 then
-		U.SPEED.MODULE = U.SPEED.MODULE + 0.25
+--[[function AccelUpdate() 
+	local buf
+	local angle_buf
+	local a_module
+	for key, value in pairs(ALL_OBJ) do
+		a_module = 0
+		for i, j in pairs(ALL_OBJ) do
+			if not(i == key) and not(buf == 0) then
+				buf = math.sqrt( (ALL_OBJ[key].X - ALL_OBJ[i].X)^2 + (ALL_OBJ[key].Y - ALL_OBJ[i].Y)^2 )
+				angle_buf = 0
+			
+				angle_buf = math.acos( (ALL_OBJ[key].X - ALL_OBJ[i].X) / buf)
+				if (ALL_OBJ[key].Y - ALL_OBJ[i].Y) > 0 then
+					angle_buf = -angle_buf
+				end
+			end
+			a_module = 
+		end
+		a_module = math.sqrt(a_module * G) 
 	end
-end
+end--]]
