@@ -145,9 +145,11 @@ function love.update(dt)
 end
 
 function love.draw()
-
 	for k,v in pairs(Stars) do
-		love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
+			local chance = math.random(1,10)
+			if chance > 3 then
+				love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
+			end
 	end
 	
 
