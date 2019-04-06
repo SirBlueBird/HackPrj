@@ -157,11 +157,17 @@ end
 
 function love.draw()
 
+	for k,v in pairs(Stars) do
+		love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
+	end
+	
+
 	for key, value in pairs(ALL_OBJ) do
 		love.graphics.draw(ALL_OBJ[key].IMG, ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X, ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y)
 	end
 	
 	love.graphics.print( OBJ_selected, 400, 70)
+
 	
 	love.graphics.print( CAM.X, 10, 70)
 	love.graphics.print( CAM.Y, 10, 80)
