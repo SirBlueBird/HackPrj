@@ -23,16 +23,17 @@ function love.load()
 	VECT.MODULE = 0
 	
 	OBJ = {}
-	OBJ.R = 36
+	OBJ.R = 3
 	OBJ.X = (MAP.X - OBJ.R)/2
 	OBJ.Y = (MAP.Y - OBJ.R)/2
 	OBJ.SPEED = VECT
-	OBJ.IMG = love.graphics.newImage("шар.png")
+	OBJ.IMG = love.graphics.newImage("moon.png")
 	timer:every(g_time, function()
 		--g_counter = Inc(g_counter)-- + 1 
 	end)
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
+	local oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200}
 	upbtn = ButtonCreate(MAP.X-50,0,50,30,"UP",BFont, function() 
 		if panel_index > 1 then
 			panel_index=panel_index-1
@@ -41,7 +42,7 @@ function love.load()
 			guis.DrapPanel = OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
 		end
 	end,
-		{0,0,0,255},{255,255,255,255},{0,0,0,255}
+		oc,fc,tc
 	)
 	downbtn = ButtonCreate(MAP.X-50,30,50,30,"DOWN",BFont, function() 
 		if panel_index < 4 then
@@ -51,56 +52,35 @@ function love.load()
 			guis.DrapPanel = OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
 		end
 	end,
-		{0,0,0,255},{255,255,255,255},{0,0,0,255}
+		oc,fc,tc
 	)
-	panel = {}
+	local panel = {}
+	
 	panel[1] = ButtonControlCreate(1,0,0,110,60,"Солнце",BFont, function() 
 	--Пишите ваши функции сюда, ток сделайте менее наркоманскую инициализацию, лол
 	end,
-	{255,255,255,200},{255,255,255,0},{255,255,200}
+	oc,fc,tc
 	)
 	panel[2] = ButtonControlCreate(1,110,0,110,60,"Меркурий",BFont, function() 
 	
 	end,
-	{255,255,255,200},{255,255,255,0},{255,255,200}
+	oc,fc,tc
 	)
 	panel[3] = ButtonControlCreate(1,220,0,110,60,"Венера",BFont, function() 
 	
 	end,
-	{255,255,255,200},{255,255,255,0},{255,255,200}
+	oc,fc,tc
 	)
 	panel[4] = ButtonControlCreate(1,330,0,110,60,"Земля",BFont, function() 
 	
 	end,
-	{255,255,255,200},{255,255,255,0},{255,255,200}
+	oc,fc,tc
 	)
 	panel[5] = ButtonControlCreate(1,440,0,110,60,"Марс",BFont, function() 
 	
 	end,
-	{255,255,255,200},{255,255,255,0},{255,255,200}
-	)--[[
-	for i=1,4 do
-		panel[i+panel_index-1] = ButtonControlCreate(i,0,110,60,i-1+panel_index,BFont, function() 
-		--Пишите ваши функции сюда, ток сделайте менее наркоманскую инициализацию, лол
-		end,
-		{255,255,255,200},{0,0,0,150},{255,255,200}
-		)
-		panel[i+panel_index-1] = ButtonControlCreate(i,110,0,110,60,i-1+panel_index,BFont, function() 
-		
-		end,
-		{255,255,255,200},{0,0,0,150},{255,255,200}
-		)
-		panel[i+panel_index-1] = ButtonControlCreate(i,220,0,110,60,i-1+panel_index,BFont, function() 
-		
-		end,
-		{255,255,255,200},{0,0,0,150},{255,255,200}
-		)
-		panel[i+panel_index-1] = ButtonControlCreate(i,330,0,110,60,i-1+panel_index,BFont, function() 
-		
-		end,
-		{255,255,255,200},{0,0,0,150},{255,255,200}
-		)
-	end]]
+	oc,fc,tc
+	)
 	for k,v in pairs(panel) do
 		if v.index == panel_index then
 		table.insert(guis.DrawPanel,v) end
@@ -123,7 +103,7 @@ function love.keypressed(key)
 	end
 end
 
-function Inc(i) -- function is for internal test only
+function Inc(i) -- function is for internal tests only
 	i=i+1
 	return i
 end
@@ -148,9 +128,9 @@ function love.update(dt)
 end
 
 function love.draw()
-	Drawgui(guis.Draw,guis.DrawPanel)
 	love.graphics.draw(OBJ.IMG, OBJ.X - OBJ.R, OBJ.Y - OBJ.R, 0, 0.25, 0.25)
 	love.graphics.print(panel_index,0,0)
+	Drawgui(guis.Draw,guis.DrawPanel)
 end
 
 function PosUpdate(U)
