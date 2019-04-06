@@ -17,8 +17,9 @@ function love.load()
 	timer = Timer()
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
+	local w = CAM.W/12 local h = CAM.H / 20
 	local oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200}
-	upbtn = ButtonCreate(MAP.X-50,0,50,30,"UP",BFont, function() 
+	upbtn = ButtonCreate(CAM.W-w,0,w,h,"UP",BFont, function() 
 		if panel_index > 1 then
 			panel_index=panel_index-1
 			guis.DrawPanel = RemovePanel(guis.DrawPanel,panel_index)
@@ -28,7 +29,7 @@ function love.load()
 	end,
 		oc,fc,tc
 	)
-	downbtn = ButtonCreate(MAP.X-50,30,50,30,"DOWN",BFont, function() 
+	downbtn = ButtonCreate(CAM.W-w,h,w,h,"DOWN",BFont, function() 
 		if panel_index < 4 then
 			panel_index=panel_index+1
 			guis.DrawPanel = RemovePanel(guis.Draw)
@@ -39,28 +40,29 @@ function love.load()
 		oc,fc,tc
 	)
 	local panel = {}
+	local w = CAM.W/(600/110) local h = CAM.H/(600/60)
 	
-	panel[1] = ButtonControlCreate(1,0,0,110,60,"Солнце",BFont, function() 
+	panel[1] = ButtonControlCreate(1,0,0,w,h,"Солнце",BFont, function() 
 	--Пишите ваши функции сюда, ток сделайте менее наркоманскую инициализацию, лол
 	end,
 	oc,fc,tc
 	)
-	panel[2] = ButtonControlCreate(1,110,0,110,60,"Меркурий",BFont, function() 
+	panel[2] = ButtonControlCreate(1,w,0,w,h,"Меркурий",BFont, function() 
 	
 	end,
 	oc,fc,tc
 	)
-	panel[3] = ButtonControlCreate(1,220,0,110,60,"Венера",BFont, function() 
+	panel[3] = ButtonControlCreate(1,w*2,0,w,h,"Венера",BFont, function() 
 	
 	end,
 	oc,fc,tc
 	)
-	panel[4] = ButtonControlCreate(1,330,0,110,60,"Земля",BFont, function() 
+	panel[4] = ButtonControlCreate(1,w*3,0,w,h,"Земля",BFont, function() 
 	
 	end,
 	oc,fc,tc
 	)
-	panel[5] = ButtonControlCreate(1,440,0,110,60,"Марс",BFont, function() 
+	panel[5] = ButtonControlCreate(1,w*4,0,w,h,"Марс",BFont, function() 
 	
 	end,
 	oc,fc,tc
