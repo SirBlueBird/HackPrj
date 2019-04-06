@@ -4,11 +4,11 @@ CAM = {}
 	CAM.X = 0
 	CAM.Y = 0
 	CAM.W = 800
-	CAM.H = 650
+	CAM.H = 600
 
 MAP = {}
-	MAP.X = 10000
-	MAP.Y = 10000
+	MAP.X = 50000
+	MAP.Y = 50000
 
 function CAM_VIEW()
 	x = love.mouse.getX()
