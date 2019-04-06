@@ -1,14 +1,14 @@
 
 
-CAM = {} 
+CAM = {}
 	CAM.X = 0
 	CAM.Y = 0
 	CAM.W = 800
 	CAM.H = 650
 
 MAP = {}
-	MAP.X = 1800
-	MAP.Y = 1650
+	MAP.X = 10000
+	MAP.Y = 10000
 
 function CAM_VIEW()
 	x = love.mouse.getX()
@@ -27,13 +27,13 @@ function CAM_VIEW()
 
 	if CAM.X < 0 then 
 		CAM.X = 0
-	elseif (CAM.X + CAM.W) > MAP.X then 
-		CAM.X = MAP.X - CAM.W
+	elseif CAM.X > MAP.X then 
+		CAM.X = MAP.X
 	end
 
 	if CAM.Y < 0 then 
 		CAM.Y = 0
-	elseif (CAM.Y + CAM.H) > MAP.Y then 
-		CAM.Y = MAP.Y - CAM.H
+	elseif CAM.Y > MAP.Y then 
+		CAM.Y = MAP.Y
 	end
 end
