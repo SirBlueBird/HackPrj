@@ -48,7 +48,7 @@ OBJ.SUN = {}
 	OBJ.SUN.MASS = 2*(10^8)
 	OBJ.SUN.SPEED = deepcopy(VECT)
 	OBJ.SUN.ACCEL = deepcopy(VECT)
-	OBJ.SUN.IMG = love.graphics.newImage("шар.png")
+	OBJ.SUN.IMG = love.graphics.newImage("icons/kissun.png")
 
 OBJ.MERCURY = {}
 	OBJ.MERCURY.R = OBJ.EARTH.R*0.3829
