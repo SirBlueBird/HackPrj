@@ -12,6 +12,7 @@ function love.load()
 	guis.Obj = {}
 	guis.DrawPanel = {}
 	g_counter = 0
+	g_selected = nil
 	g_time = 1;
 	panel_index = 1
 	timer = Timer()
@@ -19,8 +20,23 @@ function love.load()
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
 
-	local w = CAM.W/12 local h = CAM.H / 40
-	local oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200}
+	 info = {}
+	oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200} --GLOBAL COLOR STANDART, FOR SURE!
+	local w,h = CAM.W/6, CAM.H/20
+	info.exit = ButtonControlCreate(5,0,CAM.H-h,w,h,"Закрыть",BFont, function() end, oc,fc,tc)
+	info.a = ButtonControlCreate(5,0,CAM.H-h*2,w*0.8,h,"Ускорение",BFont, function() end, oc,fc,tc)
+	info.r = ButtonControlCreate(5,0,CAM.H-h*3,w*0.8,h,"Радиус",BFont, function() end, oc,fc,tc)
+	info.m = ButtonControlCreate(5,0,CAM.H-h*4,w*0.8,h,"Масса",BFont, function() end, oc,fc,tc)
+	info.label = ButtonControlCreate(5,0,CAM.H-h*5,w,h,"",BFont, function() end, oc,fc,tc)
+
+	info.ainc = ButtonControlCreate(5,w*0.8,CAM.H-h*2,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
+	info.adec = ButtonControlCreate(5,w*0.9,CAM.H-h*2,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+	info.rinc = ButtonControlCreate(5,w*0.8,CAM.H-h*3,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
+	info.rdec = ButtonControlCreate(5,w*0.9,CAM.H-h*3,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+	info.minc = ButtonControlCreate(5,w*0.8,CAM.H-h*4,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
+	info.mdec = ButtonControlCreate(5,w*0.9,CAM.H-h*4,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+
+	local w,h = CAM.W/12, CAM.H/40
 	roll = ButtonCreate(CAM.W/2-w/2,0,w,h,"Open",BFont, function()
 		if rollstate == false then
 			rollstate = true
@@ -72,7 +88,7 @@ function love.load()
 	oc,fc,tc
 	)
 	panel[2] = ButtonControlCreate(1,w,0,w,h,"Меркурий",BFont, function() 
-	
+	--типа нью обжи и вот это все
 	end,
 	oc,fc,tc
 	)
@@ -118,13 +134,13 @@ function love.load()
 	oc,fc,tc
 	)
 	for k,v in pairs(panel) do
-		--if v.index == panel_index then
-		--table.insert(guis.DrawPanel,v) end
 		table.insert(guis.Obj,v)
 	end
-	--table.insert(guis.Draw,upbtn)
+	for k,v in pairs(info) do
+		table.insert(guis.Obj,v)
+		table.insert(guis.DrawPanel,v)
+	end
 	table.insert(guis.Obj,upbtn)
-	--table.insert(guis.Draw,downbtn)
 	table.insert(guis.Obj,downbtn)
 	table.insert(guis.Draw,roll)
 	table.insert(guis.Obj,roll)
@@ -154,26 +170,27 @@ end
 
 
 function love.update(dt)
+	print(OBJ_selected)
 
-	--if not(table.getn(ALL_OBJ) == 0) then 
-		--print(ALL_OBJ[1].X," ",ALL_OBJ[2].X) 
-	--end
 
 	Mouse_X = love.mouse.getX() + CAM.X
 	Mouse_Y = love.mouse.getY() + CAM.Y
 	
 	PosUpdate()
 	SpeedUpdate()
-	AccelUpdate()
+	--AccelUpdate()
 	
 	if love.keyboard.isDown("s") then	
 		if not(OBJ_selected == -1) then
 			ALL_OBJ[OBJ_selected].SPEED.MODULE = 0
+			ALL_OBJ[OBJ_selected].SPEED.ANGLE = 0
 			ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
+			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = 0
 		end
 	elseif love.keyboard.isDown("a") then	
 		if not(OBJ_selected == -1) then
 			ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
+			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = 0
 		end
 	end
 	
@@ -183,7 +200,7 @@ function love.update(dt)
 				if (OBJ_selected == -1) or not(OBJ_selected == key) then
 					OBJ_selected = key
 				end
-			else
+			elseif not(table.getn(ALL_OBJ) == 0) and  not(OBJ_selected == -1) then
 				ALL_OBJ[OBJ_selected].SPEED.MODULE = 2
 				ALL_OBJ[OBJ_selected].SPEED.ANGLE = math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
 				if (Mouse_Y - ALL_OBJ[OBJ_selected].Y) < 0 then
@@ -227,11 +244,17 @@ end
 
 function love.mousepressed(x, y, button, istouch)
 	mousehandle(x,y,button,guis.Draw,guis.DrawPanel)
+	local handle = objhandle(x,y,ALL_OBJ,button)
+	if handle ~= nil then
+		g_selected = ALL_OBJ[handle]
+		info.label.text = g_selected.title
+		--table.insert(guis.DrawPanel,info.label)
+	end
 end
 
 function love.keypressed(key) 
 	if key == "c" then
-		NewOBJ(ALL_OBJ, "SUN", 0, 0)
+		NewOBJ(ALL_OBJ, "EARTH", 50, 50)
 	end
 end
 

@@ -81,3 +81,14 @@ function mousehandle(x,y,button,draw,drawpanel) --TODO: YOU CAN MAKE FOR MOBILE 
         end 
     end
 end
+
+function objhandle(x,y,tbl,button) --TODO: YOU CAN MAKE FOR MOBILE TOO, BUT DONT FORGET ISTOUCH()
+    if button == 1 then
+        for k,v in pairs(tbl) do
+            if (x>=v.X and x <= v.X+v.R) and (y>=v.Y and y<=v.Y+v.R) then
+                return k
+            end
+        end   
+        return nil
+    end
+end

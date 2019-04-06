@@ -24,6 +24,7 @@ VECT = {}
 OBJ = {} 
 --масса равна массе * 10^22
 OBJ.EARTH = {}
+	OBJ.EARTH.title = "Земля"
 	OBJ.EARTH.R = 36
 	OBJ.EARTH.X = 0
 	OBJ.EARTH.Y = 0
@@ -33,6 +34,7 @@ OBJ.EARTH = {}
 	OBJ.EARTH.IMG = love.graphics.newImage("шар.png")
 
 OBJ.MOON = {}
+	OBJ.MOON.title = "Луна"
 	OBJ.MOON.R = OBJ.EARTH.R/3.67
 	OBJ.MOON.X = 0
 	OBJ.MOON.Y = 0
@@ -42,6 +44,7 @@ OBJ.MOON = {}
 	OBJ.MOON.IMG = love.graphics.newImage("sun.png")
 
 OBJ.SUN = {}
+	OBJ.SUN.title = "Солнце"
 	OBJ.SUN.R = OBJ.EARTH.R--109 masses of Earth
 	OBJ.SUN.X = 0
 	OBJ.SUN.Y = 0
@@ -51,6 +54,7 @@ OBJ.SUN = {}
 	OBJ.SUN.IMG = love.graphics.newImage("icons/sun.png")
 
 OBJ.MERCURY = {}
+	OBJ.MERCURY.title = "Меркурий"
 	OBJ.MERCURY.R = OBJ.EARTH.R*0.3829
 	OBJ.MERCURY.X = 0
 	OBJ.MERCURY.Y = 0
@@ -60,6 +64,7 @@ OBJ.MERCURY = {}
 	OBJ.MERCURY.IMG = love.graphics.newImage("шар.png")
 
 OBJ.VENUS = {}
+	OBJ.VENUS.title = "Венера"
 	OBJ.VENUS.R = OBJ.EARTH.R*0.9499
 	OBJ.VENUS.X = 0
 	OBJ.VENUS.Y = 0
@@ -69,6 +74,7 @@ OBJ.VENUS = {}
 	OBJ.VENUS.IMG = love.graphics.newImage("шар.png")
 
 OBJ.MARS = {}
+	OBJ.MARS.title = "Марс"
 	OBJ.MARS.R = OBJ.EARTH.R*0.5315
 	OBJ.MARS.X = 0
 	OBJ.MARS.Y = 0
@@ -78,6 +84,7 @@ OBJ.MARS = {}
 	OBJ.MARS.IMG = love.graphics.newImage("шар.png")
 
 OBJ.JUPITER = {}
+	OBJ.JUPITER.title = "Юпитер"
 	OBJ.JUPITER.R = OBJ.EARTH.R*11.22
 	OBJ.JUPITER.X = 0
 	OBJ.JUPITER.Y = 0
@@ -87,6 +94,7 @@ OBJ.JUPITER = {}
 	OBJ.JUPITER.IMG = love.graphics.newImage("шар.png")
 
 OBJ.SATURN = {}
+	OBJ.SATURN.title = "Сатурн"
 	OBJ.SATURN.R = OBJ.EARTH.R*9.4597
 	OBJ.SATURN.X = 0
 	OBJ.SATURN.Y = 0
@@ -96,6 +104,7 @@ OBJ.SATURN = {}
 	OBJ.SATURN.IMG = love.graphics.newImage("шар.png")
 
 OBJ.URANUS = {}
+	OBJ.URANUS.title = "Уран"
 	OBJ.URANUS.R = OBJ.EARTH.R*3.981
 	OBJ.URANUS.X = 0
 	OBJ.URANUS.Y = 0
@@ -105,6 +114,7 @@ OBJ.URANUS = {}
 	OBJ.URANUS.IMG = love.graphics.newImage("шар.png")
 
 OBJ.NEPTUNE = {}
+	OBJ.NEPTUNE.title = "Нептун"
 	OBJ.NEPTUNE.R = OBJ.EARTH.R * 3.8647
 	OBJ.NEPTUNE.X = 0
 	OBJ.NEPTUNE.Y = 0

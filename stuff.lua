@@ -43,3 +43,7 @@ function RemovePanel(buttons)
     panel = {}
     return panel
 end
+
+function destruct()
+    return nil
+end
