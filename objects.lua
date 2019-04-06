@@ -208,4 +208,15 @@ OBJ.DEATHSTAR = {}
 	OBJ.DEATHSTAR.SPEED = deepcopy(VECT)
 	OBJ.DEATHSTAR.ACCEL = deepcopy(VECT)
 	OBJ.DEATHSTAR.IMG = love.graphics.newImage("шар.png")
+
+OBJ.TESLA = {}
+	OBJ.TESLA.WIDTH = OBJ.EARTH.R/1500
+	OBJ.TESLA.HEIGTH = OBJ.TESLA.WIDTH * 2
+	OBJ.TESLA.X = 0
+	OBJ.TESLA.Y = 0
+	OBJ.TESLA.MASS = 1.3/(10^19)
+	OBJ.TESLA.SPEED = deepcopy(VECT)
+	OBJ.TESLA.ACCEL = deepcopy(VECT)
+	OBJ.TESLA.IMG = love.graphics.newImage("шар.png")
+
 	
