@@ -36,12 +36,10 @@ function OpenPanel(buttons,draw,index)
             table.insert(draw,v)
         end
     end
+    return draw
 end
 
-function RemovePanel(buttons,index)
-    for k,v in pairs(buttons) do
-        if v.index ~= index and v.index ~= nil then
-            table.remove(buttons,k)
-        end
-    end
+function RemovePanel(buttons)
+    panel = {}
+    return panel
 end

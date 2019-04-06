@@ -1,13 +1,13 @@
 Timer = require 'Timer'
 require 'stuff'
 require 'buttons'
-BFont = love.graphics.newFont("calibri.ttf", 20)
+BFont = love.graphics.newFont("calibri.ttf", 15)
 
 function love.load()
-	local i= 0
 	guis = {}
 	guis.Draw = {}
 	guis.Obj = {}
+	guis.DrawPanel = {}
 	g_counter = 0
 	g_time = 1;
 	panel_index = 1
@@ -36,9 +36,9 @@ function love.load()
 	upbtn = ButtonCreate(MAP.X-50,0,50,30,"UP",BFont, function() 
 		if panel_index > 1 then
 			panel_index=panel_index-1
-			RemovePanel(guis.Draw,panel_index)
+			guis.DrawPanel = RemovePanel(guis.DrawPanel,panel_index)
 			
-			OpenPanel(guis.Obj,guis.Draw,panel_index)
+			guis.DrapPanel = OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
 		end
 	end,
 		{0,0,0,255},{255,255,255,255},{0,0,0,255}
@@ -46,14 +46,39 @@ function love.load()
 	downbtn = ButtonCreate(MAP.X-50,30,50,30,"DOWN",BFont, function() 
 		if panel_index < 4 then
 			panel_index=panel_index+1
-			RemovePanel(guis.Draw,panel_index)
+			guis.DrawPanel = RemovePanel(guis.Draw)
 			
-			OpenPanel(guis.Obj,guis.Draw,panel_index)
+			guis.DrapPanel = OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
 		end
 	end,
 		{0,0,0,255},{255,255,255,255},{0,0,0,255}
 	)
 	panel = {}
+	panel[1] = ButtonControlCreate(1,0,0,110,60,"Солнце",BFont, function() 
+	--Пишите ваши функции сюда, ток сделайте менее наркоманскую инициализацию, лол
+	end,
+	{255,255,255,200},{255,255,255,0},{255,255,200}
+	)
+	panel[2] = ButtonControlCreate(1,110,0,110,60,"Меркурий",BFont, function() 
+	
+	end,
+	{255,255,255,200},{255,255,255,0},{255,255,200}
+	)
+	panel[3] = ButtonControlCreate(1,220,0,110,60,"Венера",BFont, function() 
+	
+	end,
+	{255,255,255,200},{255,255,255,0},{255,255,200}
+	)
+	panel[4] = ButtonControlCreate(1,330,0,110,60,"Земля",BFont, function() 
+	
+	end,
+	{255,255,255,200},{255,255,255,0},{255,255,200}
+	)
+	panel[5] = ButtonControlCreate(1,440,0,110,60,"Марс",BFont, function() 
+	
+	end,
+	{255,255,255,200},{255,255,255,0},{255,255,200}
+	)--[[
 	for i=1,4 do
 		panel[i+panel_index-1] = ButtonControlCreate(i,0,110,60,i-1+panel_index,BFont, function() 
 		--Пишите ваши функции сюда, ток сделайте менее наркоманскую инициализацию, лол
@@ -75,10 +100,10 @@ function love.load()
 		end,
 		{255,255,255,200},{0,0,0,150},{255,255,200}
 		)
-	end
+	end]]
 	for k,v in pairs(panel) do
 		if v.index == panel_index then
-		table.insert(guis.Draw,v) end
+		table.insert(guis.DrawPanel,v) end
 		table.insert(guis.Obj,v)
 	end
 	table.insert(guis.Draw,upbtn)
@@ -104,7 +129,7 @@ function Inc(i) -- function is for internal test only
 end
 
 function love.mousepressed(x, y, button, istouch)
-	mousehandle(x,y,button,guis.Draw)
+	mousehandle(x,y,button,guis.Draw,guis.DrawPanel)
 end
 
 function love.update(dt)
@@ -123,7 +148,7 @@ function love.update(dt)
 end
 
 function love.draw()
-	Drawgui(guis.Draw)
+	Drawgui(guis.Draw,guis.DrawPanel)
 	love.graphics.draw(OBJ.IMG, OBJ.X - OBJ.R, OBJ.Y - OBJ.R, 0, 0.25, 0.25)
 	love.graphics.print(panel_index,0,0)
 end
