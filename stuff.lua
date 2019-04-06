@@ -29,3 +29,19 @@ function ChangeTime(timer,time,func,count) --Функция переопреде
     end
     return timer
 end
+
+function OpenPanel(buttons,draw,index)
+    for k,v in pairs(buttons) do
+        if v.index == index then
+            table.insert(draw,v)
+        end
+    end
+end
+
+function RemovePanel(buttons,index)
+    for k,v in pairs(buttons) do
+        if v.index ~= index and v.index ~= nil then
+            table.remove(buttons,k)
+        end
+    end
+end
