@@ -1,5 +1,7 @@
 Timer = require 'Timer'
 require 'stuff'
+require 'buttons'
+BFont = love.graphics.newFont("calibri.ttf", 20)
 
 function love.load()
 	g_counter = 0
@@ -24,6 +26,8 @@ function love.load()
 	timer:every(g_time, function()
 		g_counter = Inc(g_counter)-- + 1 
 	end)
+
+	testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
 	
 end
 
@@ -38,9 +42,13 @@ function love.keypressed(key)
 	end
 end
 
-function Inc(i)
+function Inc(i) -- function is for internal test only
 	i=i+1
 	return i
+end
+
+function love.mousepressed(x, y, button, istouch)
+	mousehandle(x,y,button)
 end
 
 function love.update(dt)
@@ -59,6 +67,7 @@ function love.update(dt)
 end
 
 function love.draw()
+	Drawgui()
 	love.graphics.draw(OBJ.IMG, OBJ.X - OBJ.R, OBJ.Y - OBJ.R, 0, 0.25, 0.25)
 	love.graphics.print(g_counter,0,0)
 end
