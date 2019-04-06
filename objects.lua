@@ -39,16 +39,16 @@ OBJ.MOON = {}
 	OBJ.MOON.MASS = 7.35
 	OBJ.MOON.SPEED = deepcopy(VECT)
 	OBJ.MOON.ACCEL = deepcopy(VECT)
-	OBJ.MOON.IMG = love.graphics.newImage("шар.png")
+	OBJ.MOON.IMG = love.graphics.newImage("sun.png")
 
 OBJ.SUN = {}
-	OBJ.SUN.R = OBJ.EARTH.R*109
+	OBJ.SUN.R = OBJ.EARTH.R--109 masses of Earth
 	OBJ.SUN.X = 0
 	OBJ.SUN.Y = 0
 	OBJ.SUN.MASS = 2*(10^8)
 	OBJ.SUN.SPEED = deepcopy(VECT)
 	OBJ.SUN.ACCEL = deepcopy(VECT)
-	OBJ.SUN.IMG = love.graphics.newImage("icons/kissun.png")
+	OBJ.SUN.IMG = love.graphics.newImage("icons/sun.png")
 
 OBJ.MERCURY = {}
 	OBJ.MERCURY.R = OBJ.EARTH.R*0.3829

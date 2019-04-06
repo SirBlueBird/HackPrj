@@ -7,8 +7,8 @@ CAM = {}
 	CAM.H = 720
 
 MAP = {}
-	MAP.X = 50000
-	MAP.Y = 50000
+	MAP.Y = 10000
+	MAP.X = 10000
 
 function CAM_VIEW()
 	x = love.mouse.getX()

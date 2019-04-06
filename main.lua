@@ -79,7 +79,7 @@ function love.load()
 ---------------------------------------------------------------------------
 	
 	Stars = {}
-	for i = 1, 10000 do
+	for i = 1, 50000 do
 		local star = {}
 		star.x = math.random(1, MAP.X)
 		star.y = math.random(1, MAP.Y)
@@ -93,11 +93,19 @@ function love.load()
 	OBJ_selected = -1
 	
 	G = 7*10^-7
+
+------------------------------------------------------
+--Здесь будут определять планеты
+	--NewOBJ(ALL_OBJ, "SUN",10, 10)
 	
 end
 
 
 function love.update(dt)
+
+	--if not(table.getn(ALL_OBJ) == 0) then 
+		--print(ALL_OBJ[1].X," ",ALL_OBJ[2].X) 
+	--end
 
 	Mouse_X = love.mouse.getX() + CAM.X
 	Mouse_Y = love.mouse.getY() + CAM.Y
@@ -145,12 +153,15 @@ end
 function love.draw()
 
 	for k,v in pairs(Stars) do
-		love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
+		local chance = math.random(1,10)
+		if chance > 3 then
+			love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
+		end
 	end
 	
 
 	for key, value in pairs(ALL_OBJ) do
-		love.graphics.draw(ALL_OBJ[key].IMG, ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X, ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y)
+		love.graphics.draw(ALL_OBJ[key].IMG, ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X, ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y,ALL_OBJ[key].R/150,ALL_OBJ[key].R/150)
 	end
 	
 	love.graphics.print( OBJ_selected, 400, 70)
@@ -168,7 +179,7 @@ end
 
 function love.keypressed(key) 
 	if key == "c" then
-		NewOBJ(ALL_OBJ, "EARTH")
+		NewOBJ(ALL_OBJ, "SUN", 0, 0)
 	end
 end
 
