@@ -18,10 +18,7 @@ function deepcopy(orig)
 end
 --\*~---------------------------~*/--
 
-MAP = {}
-	MAP.X = 1000
-	MAP.Y = 800
-
+ 
 VECT = {}
 	VECT.ANGLE = 0
 	VECT.MODULE = 0
