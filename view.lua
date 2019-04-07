@@ -1,14 +1,16 @@
 
+Scale = 1
+DeltaScale = 0.1
 
 CAM = {}
 	CAM.X = 0
 	CAM.Y = 0
 	CAM.W = 800
-	CAM.H = 600
+	CAM.H = 650
 
 MAP = {}
-	MAP.X = 50000
-	MAP.Y = 50000
+	MAP.X = 10000
+	MAP.Y = 10000
 
 function CAM_VIEW()
 	x = love.mouse.getX()
