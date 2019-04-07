@@ -20,21 +20,21 @@ function love.load()
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
 
-	 info = {}
+	info = {}
 	oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200} --GLOBAL COLOR STANDART, FOR SURE!
 	local w,h = CAM.W/6, CAM.H/20
-	info.exit = ButtonControlCreate(5,0,CAM.H-h,w,h,"Закрыть",BFont, function() end, oc,fc,tc)
+	info.exit = ButtonControlCreate(5,0,CAM.H-h,w,h,"Закрыть",BFont, function() guis.DrawPanel = Remove(guis.DrawPanel,5) end, oc,fc,tc)
 	info.a = ButtonControlCreate(5,0,CAM.H-h*2,w*0.8,h,"Ускорение",BFont, function() end, oc,fc,tc)
 	info.r = ButtonControlCreate(5,0,CAM.H-h*3,w*0.8,h,"Радиус",BFont, function() end, oc,fc,tc)
 	info.m = ButtonControlCreate(5,0,CAM.H-h*4,w*0.8,h,"Масса",BFont, function() end, oc,fc,tc)
 	info.label = ButtonControlCreate(5,0,CAM.H-h*5,w,h,"",BFont, function() end, oc,fc,tc)
 
-	info.ainc = ButtonControlCreate(5,w*0.8,CAM.H-h*2,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
-	info.adec = ButtonControlCreate(5,w*0.9,CAM.H-h*2,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
-	info.rinc = ButtonControlCreate(5,w*0.8,CAM.H-h*3,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
-	info.rdec = ButtonControlCreate(5,w*0.9,CAM.H-h*3,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
-	info.minc = ButtonControlCreate(5,w*0.8,CAM.H-h*4,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
-	info.mdec = ButtonControlCreate(5,w*0.9,CAM.H-h*4,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+	info.ainc = ButtonControlCreate(5,w*0.9,CAM.H-h*2,w*0.1,h,"+",BFont, function() end, oc,fc,tc) --ПЯТЬ ЭТО КОНТРОЛЬ 
+	info.adec = ButtonControlCreate(5,w*0.8,CAM.H-h*2,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+	info.rinc = ButtonControlCreate(5,w*0.9,CAM.H-h*3,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
+	info.rdec = ButtonControlCreate(5,w*0.8,CAM.H-h*3,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+	info.minc = ButtonControlCreate(5,w*0.9,CAM.H-h*4,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
+	info.mdec = ButtonControlCreate(5,w*0.8,CAM.H-h*4,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
 
 	local w,h = CAM.W/12, CAM.H/40
 	roll = ButtonCreate(CAM.W/2-w/2,0,w,h,"Open",BFont, function()
@@ -51,7 +51,7 @@ function love.load()
 			--end
 		else
 			rollstate = false
-			guis.DrawPanel = {}
+			guis.DrawPanel = RemovePanel(guis.DrawPanel)--guis.DrawPanel = {}
 			roll.text = "Open"
 			roll.y=0
 		end
@@ -62,7 +62,7 @@ function love.load()
 	upbtn = ButtonControlCreate(0,CAM.W-w,0,w,h,"UP",BFont, function() 
 		if panel_index > 1 then
 			panel_index=panel_index-1
-			guis.DrawPanel = RemovePanel(guis.DrawPanel,panel_index)
+			guis.DrawPanel = RemovePanel(guis.DrawPanel)
 			
 			guis.DrapPanel = OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
 		end
@@ -72,7 +72,7 @@ function love.load()
 	downbtn = ButtonControlCreate(0,CAM.W-w,h,w,h,"DOWN",BFont, function() 
 		if panel_index < 2 then
 			panel_index=panel_index+1
-			guis.DrawPanel = RemovePanel(guis.Draw)
+			guis.DrawPanel = RemovePanel(guis.DrawPanel)
 			
 			guis.DrapPanel = OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
 		end
@@ -156,7 +156,7 @@ function love.load()
 	end
 	for k,v in pairs(info) do
 		table.insert(guis.Obj,v)
-		table.insert(guis.DrawPanel,v)
+		--table.insert(guis.DrawPanel,v)
 	end
 	table.insert(guis.Obj,upbtn)
 	table.insert(guis.Obj,downbtn)
@@ -232,6 +232,16 @@ end
 
 function love.mousepressed(x, y, button, istouch)
 	mousehandle(x,y,button,guis.Draw,guis.DrawPanel)
+
+	for key, value in pairs(ALL_OBJ) do
+		if math.sqrt( (Mouse_X - ALL_OBJ[key].X)^2 + (Mouse_Y - ALL_OBJ[key].Y)^2 ) <= ALL_OBJ[key].R then
+			local obj = ALL_OBJ[key]
+			guis.DrawPanel = Remove(guis.DrawPanel,5)
+			Open(guis.Obj,guis.DrawPanel,5)
+			info.label.text = obj.title
+
+		end
+	end
 	
 	if not(OBJ_grabbed) then
 		for key, value in pairs(ALL_OBJ) do
