@@ -31,7 +31,7 @@ OBJ.EARTH = {}
 	OBJ.EARTH.MASS = 597 
 	OBJ.EARTH.SPEED = deepcopy(VECT)
 	OBJ.EARTH.ACCEL = deepcopy(VECT)
-	OBJ.EARTH.IMG = love.graphics.newImage("шар.png")
+	OBJ.EARTH.IMG = love.graphics.newImage("icons/earth1.png")
 
 OBJ.MOON = {}
 	OBJ.MOON.title = "Луна"
@@ -41,7 +41,7 @@ OBJ.MOON = {}
 	OBJ.MOON.MASS = 7.35
 	OBJ.MOON.SPEED = deepcopy(VECT)
 	OBJ.MOON.ACCEL = deepcopy(VECT)
-	OBJ.MOON.IMG = love.graphics.newImage("шар.png")
+	OBJ.MOON.IMG = love.graphics.newImage("icons/moon1.png")
 
 OBJ.SUN = {}
 	OBJ.SUN.title = "Солнце"
@@ -51,7 +51,7 @@ OBJ.SUN = {}
 	OBJ.SUN.MASS = 2*(10^8)
 	OBJ.SUN.SPEED = deepcopy(VECT)
 	OBJ.SUN.ACCEL = deepcopy(VECT)
-	OBJ.SUN.IMG = love.graphics.newImage("шар.png")
+	OBJ.SUN.IMG = love.graphics.newImage("icons/sun1.png")
 
 OBJ.MERCURY = {}
 	OBJ.MERCURY.title = "Меркурий"
@@ -61,7 +61,7 @@ OBJ.MERCURY = {}
 	OBJ.MERCURY.MASS = 33
 	OBJ.MERCURY.SPEED = deepcopy(VECT)
 	OBJ.MERCURY.ACCEL = deepcopy(VECT)
-	OBJ.MERCURY.IMG = love.graphics.newImage("шар.png")
+	OBJ.MERCURY.IMG = love.graphics.newImage("icons/mercury1.png")
 
 OBJ.VENUS = {}
 	OBJ.VENUS.title = "Венера"
@@ -71,7 +71,7 @@ OBJ.VENUS = {}
 	OBJ.VENUS.MASS = 486
 	OBJ.VENUS.SPEED = deepcopy(VECT)
 	OBJ.VENUS.ACCEL = deepcopy(VECT)
-	OBJ.VENUS.IMG = love.graphics.newImage("шар.png")
+	OBJ.VENUS.IMG = love.graphics.newImage("icons/venus1.png")
 
 OBJ.MARS = {}
 	OBJ.MARS.title = "Марс"
@@ -81,7 +81,7 @@ OBJ.MARS = {}
 	OBJ.MARS.MASS = 64.171
 	OBJ.MARS.SPEED = deepcopy(VECT)
 	OBJ.MARS.ACCEL = deepcopy(VECT)
-	OBJ.MARS.IMG = love.graphics.newImage("шар.png")
+	OBJ.MARS.IMG = love.graphics.newImage("icons/mars1.png")
 
 OBJ.JUPITER = {}
 	OBJ.JUPITER.title = "Юпитер"
@@ -91,7 +91,7 @@ OBJ.JUPITER = {}
 	OBJ.JUPITER.MASS = 18986
 	OBJ.JUPITER.SPEED = deepcopy(VECT)
 	OBJ.JUPITER.ACCEL = deepcopy(VECT)
-	OBJ.JUPITER.IMG = love.graphics.newImage("шар.png")
+	OBJ.JUPITER.IMG = love.graphics.newImage("icons/jupiter1.png")
 
 OBJ.SATURN = {}
 	OBJ.SATURN.title = "Сатурн"
@@ -101,7 +101,7 @@ OBJ.SATURN = {}
 	OBJ.SATURN.MASS = 5684.6
 	OBJ.SATURN.SPEED = deepcopy(VECT)
 	OBJ.SATURN.ACCEL = deepcopy(VECT)
-	OBJ.SATURN.IMG = love.graphics.newImage("шар.png")
+	OBJ.SATURN.IMG = love.graphics.newImage("icons/saturn2.png")
 
 OBJ.URANUS = {}
 	OBJ.URANUS.title = "Уран"
@@ -111,7 +111,7 @@ OBJ.URANUS = {}
 	OBJ.URANUS.MASS = 868.32
 	OBJ.URANUS.SPEED = deepcopy(VECT)
 	OBJ.URANUS.ACCEL = deepcopy(VECT)
-	OBJ.URANUS.IMG = love.graphics.newImage("шар.png")
+	OBJ.URANUS.IMG = love.graphics.newImage("icons/uranus1.png")
 
 OBJ.NEPTUNE = {}
 	OBJ.NEPTUNE.title = "Нептун"
@@ -121,7 +121,7 @@ OBJ.NEPTUNE = {}
 	OBJ.NEPTUNE.MASS = 1024.3
 	OBJ.NEPTUNE.SPEED = deepcopy(VECT)
 	OBJ.NEPTUNE.ACCEL = deepcopy(VECT)
-	OBJ.NEPTUNE.IMG = love.graphics.newImage("шар.png")
+	OBJ.NEPTUNE.IMG = love.graphics.newImage("icons/neptune1.png")
 
 OBJ.PLUTO = {}
 	OBJ.PLUTO.R = OBJ.EARTH.R*0.1863
@@ -130,7 +130,7 @@ OBJ.PLUTO = {}
 	OBJ.PLUTO.MASS = 1.303
 	OBJ.PLUTO.SPEED = deepcopy(VECT)
 	OBJ.PLUTO.ACCEL = deepcopy(VECT)
-	OBJ.PLUTO.IMG = love.graphics.newImage("шар.png")
+	OBJ.PLUTO.IMG = love.graphics.newImage("icons/pluto1.png")
 
 OBJ.DEIMOS = {}
 	OBJ.DEIMOS.R = OBJ.EARTH.R*508.46
@@ -212,5 +212,5 @@ OBJ.DEATHSTAR = {}
 	OBJ.DEATHSTAR.MASS = OBJ.MOON.MASS/2
 	OBJ.DEATHSTAR.SPEED = deepcopy(VECT)
 	OBJ.DEATHSTAR.ACCEL = deepcopy(VECT)
-	OBJ.DEATHSTAR.IMG = love.graphics.newImage("шар.png")
+	OBJ.DEATHSTAR.IMG = love.graphics.newImage("icons/deathstar.png")
 	
