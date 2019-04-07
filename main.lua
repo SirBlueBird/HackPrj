@@ -20,21 +20,21 @@ function love.load()
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
 
-	 info = {}
+	info = {}
 	oc,fc,tc = {255,255,255,200},{0,0,255,0.3},{255,255,200} --GLOBAL COLOR STANDART, FOR SURE!
 	local w,h = CAM.W/6, CAM.H/20
-	info.exit = ButtonControlCreate(5,0,CAM.H-h,w,h,"Закрыть",BFont, function() end, oc,fc,tc)
+	info.exit = ButtonControlCreate(5,0,CAM.H-h,w,h,"Закрыть",BFont, function() guis.DrawPanel = Remove(guis.DrawPanel,5) end, oc,fc,tc)
 	info.a = ButtonControlCreate(5,0,CAM.H-h*2,w*0.8,h,"Ускорение",BFont, function() end, oc,fc,tc)
 	info.r = ButtonControlCreate(5,0,CAM.H-h*3,w*0.8,h,"Радиус",BFont, function() end, oc,fc,tc)
 	info.m = ButtonControlCreate(5,0,CAM.H-h*4,w*0.8,h,"Масса",BFont, function() end, oc,fc,tc)
 	info.label = ButtonControlCreate(5,0,CAM.H-h*5,w,h,"",BFont, function() end, oc,fc,tc)
 
-	info.ainc = ButtonControlCreate(5,w*0.8,CAM.H-h*2,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
-	info.adec = ButtonControlCreate(5,w*0.9,CAM.H-h*2,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
-	info.rinc = ButtonControlCreate(5,w*0.8,CAM.H-h*3,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
-	info.rdec = ButtonControlCreate(5,w*0.9,CAM.H-h*3,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
-	info.minc = ButtonControlCreate(5,w*0.8,CAM.H-h*4,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
-	info.mdec = ButtonControlCreate(5,w*0.9,CAM.H-h*4,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+	info.ainc = ButtonControlCreate(5,w*0.9,CAM.H-h*2,w*0.1,h,"+",BFont, function() end, oc,fc,tc) --ПЯТЬ ЭТО КОНТРОЛЬ 
+	info.adec = ButtonControlCreate(5,w*0.8,CAM.H-h*2,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+	info.rinc = ButtonControlCreate(5,w*0.9,CAM.H-h*3,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
+	info.rdec = ButtonControlCreate(5,w*0.8,CAM.H-h*3,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
+	info.minc = ButtonControlCreate(5,w*0.9,CAM.H-h*4,w*0.1,h,"+",BFont, function() end, oc,fc,tc)
+	info.mdec = ButtonControlCreate(5,w*0.8,CAM.H-h*4,w*0.1,h,"-",BFont, function() end, oc,fc,tc)
 
 	local w,h = CAM.W/12, CAM.H/40
 	roll = ButtonCreate(CAM.W/2-w/2,0,w,h,"Open",BFont, function()
@@ -51,7 +51,7 @@ function love.load()
 			--end
 		else
 			rollstate = false
-			guis.DrawPanel = {}
+			guis.DrawPanel = RemovePanel(guis.DrawPanel)--guis.DrawPanel = {}
 			roll.text = "Open"
 			roll.y=0
 		end
@@ -62,7 +62,7 @@ function love.load()
 	upbtn = ButtonControlCreate(0,CAM.W-w,0,w,h,"UP",BFont, function() 
 		if panel_index > 1 then
 			panel_index=panel_index-1
-			guis.DrawPanel = RemovePanel(guis.DrawPanel,panel_index)
+			guis.DrawPanel = RemovePanel(guis.DrawPanel)
 			
 			guis.DrapPanel = OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
 		end
@@ -72,7 +72,7 @@ function love.load()
 	downbtn = ButtonControlCreate(0,CAM.W-w,h,w,h,"DOWN",BFont, function() 
 		if panel_index < 2 then
 			panel_index=panel_index+1
-			guis.DrawPanel = RemovePanel(guis.Draw)
+			guis.DrawPanel = RemovePanel(guis.DrawPanel)
 			
 			guis.DrapPanel = OpenPanel(guis.Obj,guis.DrawPanel,panel_index)
 		end
@@ -83,53 +83,71 @@ function love.load()
 	local w = CAM.W/(600/110) local h = CAM.H/(20)
 	
 	panel[1] = ButtonControlCreate(1,0,0,w,h,"Солнце",BFont, function() 
-	--Пишите ваши функции сюда
+		NewOBJ(ALL_OBJ, "SUN")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[2] = ButtonControlCreate(1,w,0,w,h,"Меркурий",BFont, function() 
-	--типа нью обжи и вот это все
+		NewOBJ(ALL_OBJ, "MERCURY")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[3] = ButtonControlCreate(1,w*2,0,w,h,"Венера",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "VENUS")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[4] = ButtonControlCreate(1,w*3,0,w,h,"Земля",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "EARTH")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[5] = ButtonControlCreate(1,w*4,0,w,h,"Марс",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "MARS")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	--===
 	panel[6] = ButtonControlCreate(2,0,0,w,h,"Юпитер",BFont, function() 
-	--Пишите ваши функции сюда
+		NewOBJ(ALL_OBJ, "JUPITER")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[7] = ButtonControlCreate(2,w,0,w,h,"Сатурн",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "SATURN")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[8] = ButtonControlCreate(2,w*2,0,w,h,"Уран",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "URANUS")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[9] = ButtonControlCreate(2,w*3,0,w,h,"Нептун",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "NEPTUNE")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[10] = ButtonControlCreate(2,w*4,0,w,h,"SPACEMAN",BFont, function() 
-	
+		
 	end,
 	oc,fc,tc
 	)
@@ -138,7 +156,7 @@ function love.load()
 	end
 	for k,v in pairs(info) do
 		table.insert(guis.Obj,v)
-		table.insert(guis.DrawPanel,v)
+		--table.insert(guis.DrawPanel,v)
 	end
 	table.insert(guis.Obj,upbtn)
 	table.insert(guis.Obj,downbtn)
@@ -146,95 +164,65 @@ function love.load()
 	table.insert(guis.Obj,roll)
 ---------------------------------------------------------------------------
 	
-	Stars = {}
-	for i = 1, 50000 do
+	--[[Stars = {}
+	for i = 1, 10000 do
 		local star = {}
 		star.x = math.random(1, MAP.X)
 		star.y = math.random(1, MAP.Y)
 		star.visible = true
 		table.insert(Stars,star)
-	end
+	end--]]
 	
 	love.window.setMode(CAM.W, CAM.H)
 	
 	ALL_OBJ = {}
 	OBJ_selected = -1
+	OBJ_grabbed = false
 	
 	G = 7*10^-7
-
-------------------------------------------------------
---Здесь будут определять планеты
-	--NewOBJ(ALL_OBJ, "SUN",10, 10)
+	A_MIN = 2*10^-6
 	
 end
 
-
 function love.update(dt)
-	print(OBJ_selected)
-
 
 	Mouse_X = love.mouse.getX() + CAM.X
 	Mouse_Y = love.mouse.getY() + CAM.Y
 	
 	PosUpdate()
 	SpeedUpdate()
-	--AccelUpdate()
+	AccelUpdate()
 	
-	if love.keyboard.isDown("s") then	
-		if not(OBJ_selected == -1) then
-			ALL_OBJ[OBJ_selected].SPEED.MODULE = 0
-			ALL_OBJ[OBJ_selected].SPEED.ANGLE = 0
-			ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
-			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = 0
-		end
-	elseif love.keyboard.isDown("a") then	
-		if not(OBJ_selected == -1) then
-			ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
-			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = 0
-		end
+	if love.keyboard.isDown("s") and not(OBJ_selected == -1) then	
+		ALL_OBJ[OBJ_selected].SPEED.MODULE = 0
+		ALL_OBJ[OBJ_selected].SPEED.ANGLE = 0
+		ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
+		ALL_OBJ[OBJ_selected].ACCEL.ANGLE = 0
 	end
 	
-	if love.mouse.isDown(1) then
-		for key, value in pairs(ALL_OBJ) do
-			if math.sqrt( (Mouse_X - ALL_OBJ[key].X)^2 + (Mouse_Y - ALL_OBJ[key].Y)^2 ) <= ALL_OBJ[key].R then 
-				if (OBJ_selected == -1) or not(OBJ_selected == key) then
-					OBJ_selected = key
-				end
-			elseif not(table.getn(ALL_OBJ) == 0) and  not(OBJ_selected == -1) then
-				ALL_OBJ[OBJ_selected].SPEED.MODULE = 2
-				ALL_OBJ[OBJ_selected].SPEED.ANGLE = math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
-				if (Mouse_Y - ALL_OBJ[OBJ_selected].Y) < 0 then
-					ALL_OBJ[OBJ_selected].SPEED.ANGLE = -ALL_OBJ[OBJ_selected].SPEED.ANGLE
-				end
-			end
-		end
-	elseif (love.mouse.isDown(2)) and not(OBJ_selected == -1) then
-		ALL_OBJ[OBJ_selected].ACCEL.MODULE = .1
-		ALL_OBJ[OBJ_selected].ACCEL.ANGLE = math.acos( (Mouse_X - ALL_OBJ[OBJ_selected].X) / math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) )
-		if (Mouse_Y - ALL_OBJ[OBJ_selected].Y) < 0 then
-			ALL_OBJ[OBJ_selected].ACCEL.ANGLE = -ALL_OBJ[OBJ_selected].ACCEL.ANGLE
-		end
+	if OBJ_grabbed then
+		ALL_OBJ[OBJ_selected].SPEED.MODULE = 0
+		ALL_OBJ[OBJ_selected].SPEED.ANGLE = 0
+		ALL_OBJ[OBJ_selected].ACCEL.MODULE = 0
+		ALL_OBJ[OBJ_selected].ACCEL.ANGLE = 0
+			
+		ALL_OBJ[OBJ_selected].X = Mouse_X
+		ALL_OBJ[OBJ_selected].Y = Mouse_Y		
 	end
-	
+
 	CAM_VIEW()
 end
 
 function love.draw()
 
-	for k,v in pairs(Stars) do
-		local chance = math.random(1,10)
-		if chance > 3 then
-			love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
-		end
-	end
+	--[[for k,v in pairs(Stars) do
+		love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
+	end--]]
 	
 
 	for key, value in pairs(ALL_OBJ) do
-		love.graphics.draw(ALL_OBJ[key].IMG, ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X, ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y,ALL_OBJ[key].R/150,ALL_OBJ[key].R/150)
+		love.graphics.draw(ALL_OBJ[key].IMG, (ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X), (ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y))
 	end
-	
-	love.graphics.print( OBJ_selected, 400, 70)
-
 	
 	love.graphics.print( CAM.X, 10, 70)
 	love.graphics.print( CAM.Y, 10, 80)
@@ -244,17 +232,36 @@ end
 
 function love.mousepressed(x, y, button, istouch)
 	mousehandle(x,y,button,guis.Draw,guis.DrawPanel)
-	local handle = objhandle(x,y,ALL_OBJ,button)
-	if handle ~= nil then
-		g_selected = ALL_OBJ[handle]
-		info.label.text = g_selected.title
-		--table.insert(guis.DrawPanel,info.label)
+
+	for key, value in pairs(ALL_OBJ) do
+		if math.sqrt( (Mouse_X - ALL_OBJ[key].X)^2 + (Mouse_Y - ALL_OBJ[key].Y)^2 ) <= ALL_OBJ[key].R then
+			local obj = ALL_OBJ[key]
+			guis.DrawPanel = Remove(guis.DrawPanel,5)
+			Open(guis.Obj,guis.DrawPanel,5)
+			info.label.text = obj.title
+
+		end
+	end
+	
+	if not(OBJ_grabbed) then
+		for key, value in pairs(ALL_OBJ) do
+			if math.sqrt( (Mouse_X - ALL_OBJ[key].X)^2 + (Mouse_Y - ALL_OBJ[key].Y)^2 ) <= ALL_OBJ[key].R then 
+				if (OBJ_selected == -1) or not(OBJ_selected == key) then
+					OBJ_selected = key
+				end
+			end
+		end
+	end
+	if (button == 1) and not(OBJ_selected == -1) and (math.sqrt( (Mouse_X - ALL_OBJ[OBJ_selected].X)^2 + (Mouse_Y - ALL_OBJ[OBJ_selected].Y)^2 ) <= ALL_OBJ[OBJ_selected].R)  then 
+		OBJ_grabbed = not(OBJ_grabbed)
 	end
 end
 
-function love.keypressed(key) 
+function love.keyreleased(key) 
 	if key == "c" then
-		NewOBJ(ALL_OBJ, "EARTH", 50, 50)
+		NewOBJ(ALL_OBJ, "EARTH")
+	elseif key == "escape" then 
+		os.exit()
 	end
 end
 
@@ -266,47 +273,57 @@ function PosUpdate()
 end
 
 function SpeedUpdate()
-	local buf
-	local angle_buf
 	for key, value in pairs(ALL_OBJ) do 
-		buf = math.sqrt( (ALL_OBJ[key].SPEED.MODULE*math.cos(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE))^2 + (ALL_OBJ[key].SPEED.MODULE*math.sin(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE))^2 )
-		angle_buf = 0
-		if not(buf == 0) then 
-			angle_buf = math.acos( (ALL_OBJ[key].SPEED.MODULE*math.cos(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE)) / buf ) 
-			if (ALL_OBJ[key].SPEED.MODULE*math.sin(ALL_OBJ[key].SPEED.ANGLE) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE)) < 0 then 
-				angle_buf = -angle_buf 
-			end
-		end
-
-		ALL_OBJ[key].SPEED.MODULE = buf
-		ALL_OBJ[key].SPEED.ANGLE = angle_buf	
+		ALL_OBJ[key].SPEED.MODULE, ALL_OBJ[key].SPEED.ANGLE = VectSum(ALL_OBJ[key].SPEED, ALL_OBJ[key].ACCEL)
 	end
 end
 
-function AccelUpdate() 
-	print(table.getn(ALL_OBJ))
-	if not(table.getn(ALL_OBJ) == 1) then
+function AccelUpdate()
+	if not(#ALL_OBJ == 1) then
+		local Acc_buf = deepcopy(VECT)
+		local Acc_sum = deepcopy(VECT)
 		for key, value in pairs(ALL_OBJ) do
-			a_mod_buf, a_mod_buf_sum, a_angle_buf_sum = 0, 0, 0
+			Acc_sum.MODULE, Acc_sum.ANGLE = 0, 0
 			for i, j in pairs(ALL_OBJ) do
-				buffer = math.sqrt( (ALL_OBJ[key].X - ALL_OBJ[i].X)^2 + (ALL_OBJ[key].Y - ALL_OBJ[i].Y)^2 )
-				if not(i == key) and not(buffer == 0) then
-				
-					a_angle_buf = math.acos( (ALL_OBJ[key].X - ALL_OBJ[i].X) / buffer)
-					if (ALL_OBJ[key].Y - ALL_OBJ[i].Y) > 0 then
-						a_angle_buf = -a_angle_buf
-					end
-					a_mod_buf = ALL_OBJ[key].MASS / buffer^2
-					buffer = a_mod_buf*math.cos(a_angle_buf) + a_mod_buf_sum*math.cos(a_angle_buf_sum)
-					a_mod_buf_sum = math.sqrt( buffer^2 + (a_mod_buf*math.sin(a_angle_buf) + a_mod_buf_sum*math.sin(a_angle_buf_sum))^2 )
-					a_angle_buf_sum = math.acos( buffer / a_mod_buf_sum )
-					
-				end	
+				if not(key == i) and not(OBJ_selected == i) then
+					Acc_buf.MODULE, Acc_buf.ANGLE = PointsToVect( ALL_OBJ[key], ALL_OBJ[i] )
+					Acc_sum.MODULE, Acc_sum.ANGLE = VectSum( Acc_sum, Acc_buf)
+				end
 			end
-			a_mod_buf_sum = math.sqrt(a_mod_buf_sum * G) 
-			buffer = a_mod_buf_sum*math.cos(a_angle_buf_sum) + ALL_OBJ[key].ACCEL.MODULE*math.cos(ALL_OBJ[key].ACCEL.ANGLE)
-			ALL_OBJ[key].ACCEL.MODULE = math.sqrt( buffer^2 + (a_mod_buf_sum*math.sin(a_angle_buf_sum) + ALL_OBJ[key].ACCEL.MODULE*math.sin(ALL_OBJ[key].ACCEL.ANGLE))^2 )
-			ALL_OBJ[key].ACCEL.ANGLE = math.acos( buffer / ALL_OBJ[key].ACCEL.MODULE )
+			Acc_sum.MODULE = math.sqrt(Acc_sum.MODULE * G)
+			if key == OBJ_selected then 
+				print(Acc_sum.MODULE)
+			end
+			if not(Acc_sum.MODULE <= A_MIN) then
+				ALL_OBJ[key].ACCEL.MODULE, ALL_OBJ[key].ACCEL.ANGLE = VectSum( ALL_OBJ[key].ACCEL, Acc_sum )
+			end
 		end
 	end
+end
+
+function VectSum(N, K)
+	local R = deepcopy(VECT)
+	R.MODULE = math.sqrt( (N.MODULE*math.cos(N.ANGLE) + K.MODULE*math.cos(K.ANGLE))^2 + (N.MODULE*math.sin(N.ANGLE) + K.MODULE*math.sin(K.ANGLE))^2 )
+	if not(R.MODULE == 0) then 
+		R.ANGLE = math.acos( (N.MODULE*math.cos(N.ANGLE) + K.MODULE*math.cos(K.ANGLE)) / R.MODULE ) 
+		if (N.MODULE*math.sin(N.ANGLE) + K.MODULE*math.sin(K.ANGLE)) < 0 then
+			R.ANGLE = -R.ANGLE
+		end
+	end
+	
+	return R.MODULE, R.ANGLE
+end
+
+function PointsToVect(N, K)
+	local R = deepcopy(VECT)
+	local L = math.sqrt(( K.X - N.X )^2 + ( K.Y - N.Y )^2)
+	R.MODULE = N.MASS/ L^2
+	if not(R.MODULE == 0) then 
+		R.ANGLE = math.acos( ( K.X - N.X) / L ) 
+		if (K.Y - N.Y) < 0 then
+			R.ANGLE = -R.ANGLE
+		end
+	end
+	
+	return R.MODULE, R.ANGLE
 end

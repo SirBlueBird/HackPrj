@@ -72,11 +72,13 @@ function mousehandle(x,y,button,draw,drawpanel) --TODO: YOU CAN MAKE FOR MOBILE 
         for k,v in pairs(draw) do
             if (x>=v.x and x <= v.x+v.xsize) and (y>=v.y and y<=v.y+v.ysize) then
                 v.func()
+                return
             end
         end   
         for k,v in pairs(drawpanel) do
             if (x>=v.x and x <= v.x+v.xsize) and (y>=v.y and y<=v.y+v.ysize) then
                 v.func()
+                return
             end
         end 
     end

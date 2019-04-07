@@ -40,8 +40,27 @@ function OpenPanel(buttons,draw,index)
 end
 
 function RemovePanel(buttons)
-    panel = {}
+    local panel = {}
+    for k,v in pairs(buttons) do
+        if v.index > 4 then
+            table.insert(panel,v)
+        end
+    end
     return panel
+end
+
+function Remove(draw,ind)
+    local panel = {}
+    for k,v in pairs(draw) do
+        if v.index < 4 then table.insert(panel,v) end
+    end
+    return panel
+end
+
+function Open(obj,draw,ind)
+    for k,v in pairs(obj) do
+        if v.index == ind then table.insert(draw,v) end
+    end
 end
 
 function destruct()
