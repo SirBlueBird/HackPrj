@@ -15,60 +15,6 @@ gui.Button.ocolor, gui.Button.ocolor, gui.Button.ocolor = {},{},{}
 gui.ButtonControl = {}
 deepcopy(gui.Button)
 gui.ButtonControl.index = 0
---[[gui.ControlPanel = {}
-gui.ControlPanel.x = 0
-gui.ControlPanel.y = 0
-gui.ControlPanel.w = 0
-gui.ControlPanel.h = 0
-gui.ControlPanel.n = 4 -- ITS LIKE CONST, NUMBER OF PANELS
-gui.ControlPanel.active = 1
-gui.ControlPanel.panels = {}
-gui.ControlPanel.up = {}
-gui.ControlPanel.down = {} --YOU HAVE TO INIT THEM BEFORE INITIALAZING CONTROL PANEL
---gui.ControlPanel.roll = {}
-
-gui.Panel = {}
-gui.Panel.index = 1
-gui.Panel.x = 0
-gui.Panel.y = 0
-gui.Panel.w = 0
-gui.Panel.h = 0
-gui.Panel.n = 5 --CONST AGAIN
-gui.Panel.Buttons = {}]]
-
-
---guis = {}
---guis.Buttons = {}
---guis.Panels = {}
-
---[[function CreateControlPanel(x,y,w,h,panels,up,down,roll)
-    local control = deepcopy(gui.ControlPanel)
-    control.x = x
-    control.y = y
-    control.w = w
-    control.h = h
-    local i = 1
-    local 
-    for i=1,control.n do
-        CreatePanel()
-    end
-    control.panels = panels
-    control.up = up
-    control.down = down
-    --ControlPanel.roll = roll insert???
-    return control
-end
-
-function CreatePanel(x,y,w,h,index,buttons)
-    local panel = deepcopy(gui.Panel)
-    panel.x = x
-    panel.y = y
-    panel.w = w
-    panel.h = h
-    panel.index = index
-    panel.Buttons = buttons
-    return panel
-end]]
 
 function ButtonCreate(x,y,xsize,ysize,text,font,func,ocolor,fcolor,tcolor) --FONT
     local button = deepcopy(gui.Button)
@@ -126,12 +72,25 @@ function mousehandle(x,y,button,draw,drawpanel) --TODO: YOU CAN MAKE FOR MOBILE 
         for k,v in pairs(draw) do
             if (x>=v.x and x <= v.x+v.xsize) and (y>=v.y and y<=v.y+v.ysize) then
                 v.func()
+                return
             end
         end   
         for k,v in pairs(drawpanel) do
             if (x>=v.x and x <= v.x+v.xsize) and (y>=v.y and y<=v.y+v.ysize) then
                 v.func()
+                return
             end
         end 
+    end
+end
+
+function objhandle(x,y,tbl,button) --TODO: YOU CAN MAKE FOR MOBILE TOO, BUT DONT FORGET ISTOUCH()
+    if button == 1 then
+        for k,v in pairs(tbl) do
+            if (x>=v.X and x <= v.X+v.R) and (y>=v.Y and y<=v.Y+v.R) then
+                return k
+            end
+        end   
+        return nil
     end
 end
