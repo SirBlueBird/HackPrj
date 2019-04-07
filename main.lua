@@ -147,8 +147,10 @@ function love.load()
 	end,
 	oc,fc,tc
 	)
-	panel[10] = ButtonControlCreate(2,w*4,0,w,h,"SPACEMAN",BFont, function() 
-		
+	panel[10] = ButtonControlCreate(2,w*4,0,w,h,"Луна",BFont, function() 
+		NewOBJ(ALL_OBJ, "MOON")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
