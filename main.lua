@@ -7,6 +7,7 @@ Timer = require 'Timer'
 BFont = love.graphics.newFont("calibri.ttf", 15)
 
 function love.load()
+	--love.graphics.setBackgroundColor(255,255,255,1)
 	guis = {}
 	guis.Draw = {}
 	guis.Obj = {}
@@ -105,9 +106,9 @@ function love.load()
 	oc,fc,tc
 	)
 	panel[4] = ButtonControlCreate(1,w*3,0,w,h,"Земля",BFont, function() 
-		NewOBJ(ALL_OBJ, "EARTH")
-		OBJ_selected = #ALL_OBJ
-		OBJ_grabbed = true
+		NewOBJ(ALL_OBJ, "EARTH",50,50)
+		--OBJ_selected = #ALL_OBJ
+		--OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
@@ -163,6 +164,7 @@ function love.load()
 	table.insert(guis.Obj,downbtn)
 	table.insert(guis.Draw,roll)
 	table.insert(guis.Obj,roll)
+	xstar, ystar = CAM.X, CAM.Y
 ---------------------------------------------------------------------------
 	
 	Stars = {}
@@ -217,20 +219,38 @@ end
 function love.draw()
 
 	for k,v in pairs(Stars) do
-		local p = math.random(1,10)/10
-		if p < 10  then
+		local p = math.random(1,10)
+		if p < 7  then
 		love.graphics.points(v.x-CAM.X, v.y-CAM.Y) end
 	end
-	
+	love.graphics.push( )
+	love.graphics.scale(0.8,0.8)
+	love.graphics.draw(love.graphics.newImage("icons/sun1.png"), (1000+500 - 1 - CAM.X), (5 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/moon1.png"), (1000+800 - 1 - CAM.X), (75 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/pluto1.png"), (1000+1100 - 1 - CAM.X), (80 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/uranus1.png"), (1000+1500 - 1 - CAM.X), (50 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/saturn2.png"), 1000+(510 - 1 - CAM.X), (600 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/neptune1.png"), (1000+100 - 1 - CAM.X), (500 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/mercury1.png"), (1000+600 - 1 - CAM.X), (100 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/venus1.png"), (1000+200 - 1 - CAM.X), (60 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/mars1.png"), (1000+800 - 1 - CAM.X), (400 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/earth1.png"), (1000+175 - 1 - CAM.X), (275 - 1 - CAM.Y))
+	love.graphics.draw(love.graphics.newImage("icons/moon1.png"), (1000+250- 1 - CAM.X), (350 - 1 - CAM.Y))
+	love.graphics.scale(0.2,0.2)
+	love.graphics.draw(love.graphics.newImage("star.png"), CAM.X/2+math.random(1,2), 1500)
+	love.graphics.pop()
 
 	for key, value in pairs(ALL_OBJ) do
+		--love.graphics.push( )
+		--love.graphics.scale(0.5,0.5)
 		love.graphics.draw(ALL_OBJ[key].IMG, (ALL_OBJ[key].X - ALL_OBJ[key].R - CAM.X), (ALL_OBJ[key].Y - ALL_OBJ[key].R - CAM.Y))
+		--love.graphics.pop()
 	end
 	
 	love.graphics.print( CAM.X, 10, 70)
 	love.graphics.print( CAM.Y, 10, 80)
 	
-	Drawgui(guis.Draw,guis.DrawPanel)
+	--Drawgui(guis.Draw,guis.DrawPanel)
 end
 
 function love.mousepressed(x, y, button, istouch)
