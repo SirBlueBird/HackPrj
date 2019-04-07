@@ -17,6 +17,7 @@ function love.load()
 	panel_index = 1
 	timer = Timer()
 	rollstate = false -- свернут
+	--love.window.setFullscreen(true)
 
 	--testbutton = ButtonCreate(100,100,100,50,"TEST",BFont,function() g_counter = g_counter - 1 end, {255,255,255,255},{0,0,255,255},{255,255,255,255})
 
@@ -164,14 +165,14 @@ function love.load()
 	table.insert(guis.Obj,roll)
 ---------------------------------------------------------------------------
 	
-	--[[Stars = {}
+	Stars = {}
 	for i = 1, 10000 do
 		local star = {}
 		star.x = math.random(1, MAP.X)
 		star.y = math.random(1, MAP.Y)
 		star.visible = true
 		table.insert(Stars,star)
-	end--]]
+	end
 	
 	love.window.setMode(CAM.W, CAM.H)
 	
@@ -215,9 +216,11 @@ end
 
 function love.draw()
 
-	--[[for k,v in pairs(Stars) do
-		love.graphics.points(v.x-CAM.X, v.y-CAM.Y)
-	end--]]
+	for k,v in pairs(Stars) do
+		local p = math.random(1,10)/10
+		if p < 10  then
+		love.graphics.points(v.x-CAM.X, v.y-CAM.Y) end
+	end
 	
 
 	for key, value in pairs(ALL_OBJ) do
