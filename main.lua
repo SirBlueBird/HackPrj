@@ -83,53 +83,71 @@ function love.load()
 	local w = CAM.W/(600/110) local h = CAM.H/(20)
 	
 	panel[1] = ButtonControlCreate(1,0,0,w,h,"Солнце",BFont, function() 
-	--Пишите ваши функции сюда
+		NewOBJ(ALL_OBJ, "SUN")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[2] = ButtonControlCreate(1,w,0,w,h,"Меркурий",BFont, function() 
-	--типа нью обжи и вот это все
+		NewOBJ(ALL_OBJ, "MERCURY")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[3] = ButtonControlCreate(1,w*2,0,w,h,"Венера",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "VENUS")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[4] = ButtonControlCreate(1,w*3,0,w,h,"Земля",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "EARTH")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[5] = ButtonControlCreate(1,w*4,0,w,h,"Марс",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "MARS")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	--===
 	panel[6] = ButtonControlCreate(2,0,0,w,h,"Юпитер",BFont, function() 
-	--Пишите ваши функции сюда
+		NewOBJ(ALL_OBJ, "JUPITER")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[7] = ButtonControlCreate(2,w,0,w,h,"Сатурн",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "SATURN")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[8] = ButtonControlCreate(2,w*2,0,w,h,"Уран",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "URANUS")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[9] = ButtonControlCreate(2,w*3,0,w,h,"Нептун",BFont, function() 
-	
+		NewOBJ(ALL_OBJ, "NEPTUNE")
+		OBJ_selected = #ALL_OBJ
+		OBJ_grabbed = true
 	end,
 	oc,fc,tc
 	)
 	panel[10] = ButtonControlCreate(2,w*4,0,w,h,"SPACEMAN",BFont, function() 
-	
+		
 	end,
 	oc,fc,tc
 	)
@@ -232,6 +250,8 @@ end
 function love.keyreleased(key) 
 	if key == "c" then
 		NewOBJ(ALL_OBJ, "EARTH")
+	elseif key == "escape" then 
+		os.exit()
 	end
 end
 
@@ -255,7 +275,7 @@ function AccelUpdate()
 		for key, value in pairs(ALL_OBJ) do
 			Acc_sum.MODULE, Acc_sum.ANGLE = 0, 0
 			for i, j in pairs(ALL_OBJ) do
-				if not(key == i) then
+				if not(key == i) and not(OBJ_selected == i) then
 					Acc_buf.MODULE, Acc_buf.ANGLE = PointsToVect( ALL_OBJ[key], ALL_OBJ[i] )
 					Acc_sum.MODULE, Acc_sum.ANGLE = VectSum( Acc_sum, Acc_buf)
 				end
